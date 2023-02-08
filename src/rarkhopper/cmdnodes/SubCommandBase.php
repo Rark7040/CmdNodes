@@ -5,6 +5,9 @@ declare(strict_types = 1);
 namespace rarkhopper\cmdnodes;
 
 use pocketmine\command\CommandSender;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
+use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
+use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
 use rarkhopper\cmdnodes\params\ICommandParameter;
 use function explode;
@@ -49,8 +52,13 @@ abstract class SubCommandBase implements IPermissionTestable {
 		return false;
 	}
 
-	protected function appendParameter(ICommandParameter $param) : SubCommandBase{
-		$this->params[] = $param;
+	protected function appendParameter(ICommandParameter $param, ?int $position = null) : SubCommandBase{
+		if($position === null){
+			$this->params[] = $param;
+
+		}else{
+			$this->params[$position] = $param;
+		}
 		return $this;
 	}
 
@@ -58,6 +66,16 @@ abstract class SubCommandBase implements IPermissionTestable {
 	 * @param array<string> $args
 	 */
 	abstract protected function onRun(CommandSender $sender, string $usedAlias, array $args) : void;
+
+	public function asParameter() : NetworkParameter{
+		$label = $this->getLabel();
+		$param = new NetworkParameter();
+		$param->paramName = $label;
+		$param->paramType = AvailableCommandsPacket::ARG_FLAG_VALID | AvailableCommandsPacket::ARG_FLAG_ENUM;
+		$param->isOptional = false;
+		$param->enum = new CommandEnum($label, [$label]);
+		return $param;
+	}
 
 	/**
 	 * @return array<NetworkParameter>
