@@ -7,26 +7,40 @@ namespace rarkhopper\cmdnodes\command;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\CommandException;
+use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
+use function array_shift;
+use function strtolower;
 
 abstract class CommandBase extends Command implements IPermissionTestable{
-	/** @var array<SubCommandBase> */
+	/** @var array<string, SubCommandBase> */
 	private array $subCmds = [];
-
-	protected function registerSubCommand(SubCommandBase $subCmd) : CommandBase{
-		$this->subCmds[] = $subCmd;
-		return $this;
-	}
 
 	/**
 	 * @param array<string> $args
 	 * @throws CommandException
 	 */
-	abstract protected function onRun(CommandSender $sender, string $usedAlias, array $args) : void;
+	abstract protected function onRun(CommandSender $sender, array $args) : void;
+
+	protected function registerSubCommand(SubCommandBase $subCmd) : CommandBase{
+		$this->subCmds[strtolower($subCmd->getLabel())] = $subCmd;
+		return $this;
+	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args) {
 		if(!$this->testPermission($sender)) return;
-		$this->onRun($sender, $commandLabel, $args);
+		$subCmdLabel = array_shift($args);
+
+		if($subCmdLabel === null){
+			$this->onRun($sender, $args);
+			return;
+		}
+		$subCmd = $this->subCmds[strtolower((string) $subCmdLabel)] ?? null;
+
+		if($subCmd === null){
+			throw new InvalidCommandSyntaxException();
+		}
+		$subCmd->onRun($sender, $args);
 	}
 
 	/**

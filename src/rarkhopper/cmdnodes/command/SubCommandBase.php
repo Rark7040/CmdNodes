@@ -24,6 +24,11 @@ abstract class SubCommandBase implements IPermissionTestable{
 		private array $aliases = []
 	) {}
 
+	/**
+	 * @param array<string> $args
+	 */
+	abstract public function onRun(CommandSender $sender, array $args) : void;
+
 	public function getLabel() : string{
 		return $this->label;
 	}
@@ -60,11 +65,6 @@ abstract class SubCommandBase implements IPermissionTestable{
 		}
 		return $this;
 	}
-
-	/**
-	 * @param array<string> $args
-	 */
-	abstract protected function onRun(CommandSender $sender, string $usedAlias, array $args) : void;
 
 	private function asParameter() : NetworkParameter{
 		$label = $this->getLabel();
