@@ -6,10 +6,12 @@ namespace rarkhopper\cmdnodes;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\command\utils\CommandException;
 use pocketmine\lang\Translatable;
 use pocketmine\network\mcpe\protocol\types\command\CommandData;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
+use pocketmine\plugin\PluginOwned;
 use pocketmine\Server;
 use function array_values;
 use function count;
@@ -17,7 +19,7 @@ use function in_array;
 use function strtolower;
 use function ucfirst;
 
-abstract class CommandBase extends Command implements IPermissionTestable{
+abstract class CommandBase extends Command implements IPermissionTestable, PluginOwned{
 	/** @var array<SubCommandBase> */
 	private array $subCmds = [];
 
@@ -28,6 +30,7 @@ abstract class CommandBase extends Command implements IPermissionTestable{
 
 	/**
 	 * @param array<string> $args
+	 * @throws CommandException
 	 */
 	abstract protected function onRun(CommandSender $sender, string $usedAlias, array $args) : void;
 
