@@ -1,0 +1,4 @@
+name: CmdNodes
+version: 1.0.0
+antigen: rarkhopper\cmdnodes
+api: 4.0.0
