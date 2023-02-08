@@ -30,6 +30,7 @@ final class CmdNodes implements PluginOwned{
 	public function registerOwner(Plugin $owner) : void{
 		if($this->alreadyRegistered()) throw new CmdNodesException('already registered owner. given ' . $owner->getName());
 		$this->owner = $owner;
+		Server::getInstance()->getPluginManager()->registerEvents(new CmdNodesListener(), $owner);
 	}
 
 	public function alreadyRegistered() : bool{

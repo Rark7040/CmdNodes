@@ -8,7 +8,9 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\utils\CommandStringHelper;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\KnownTranslationFactory;
+use pocketmine\Server;
 use pocketmine\utils\TextFormat;
+use rarkhopper\cmdnodes\command\CommandBase;
 use rarkhopper\cmdnodes\exception\DuplicateCommandNameException;
 use function array_shift;
 
@@ -32,8 +34,12 @@ class CmdNodesCommandMap{
 		$label = $cmd->getLabel();
 		$aliases = $cmd->getAliases();
 		$aliases[] = $label;
+		$pmCmdMap = Server::getInstance()->getCommandMap();
 
 		foreach($aliases as $name){
+			if($pmCmdMap->getCommand($name) !== null){
+				throw new DuplicateCommandNameException('already registered command in pmmp`s command map. given ' . $name);
+			}
 			if(!isset($this->cmds[$name])){
 				$this->cmds[$name] = $cmd;
 				continue;
@@ -42,7 +48,7 @@ class CmdNodesCommandMap{
 			$fallbackName = $fallbackPrefix . ':' . $name;
 
 			if(isset($this->cmds[$fallbackName])){
-				throw new DuplicateCommandNameException('already registered command. ' . $fallbackName);
+				throw new DuplicateCommandNameException('already registered command. given ' . $fallbackName);
 
 			}else{
 				$this->cmds[$fallbackName] = $cmd;
@@ -81,5 +87,12 @@ class CmdNodesCommandMap{
 
 	public function getCommand(string $name) : ?CommandBase{
 		return $this->cmds[$name] ?? null;
+	}
+
+	/**
+	 * @return CommandBase[]
+	 */
+	public function getCommands() : array{
+		return $this->cmds;
 	}
 }

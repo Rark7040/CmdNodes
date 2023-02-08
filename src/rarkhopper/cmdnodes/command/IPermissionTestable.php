@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types = 1);
-namespace rarkhopper\cmdnodes;
+namespace rarkhopper\cmdnodes\command;
 
 use pocketmine\command\CommandSender;
 
