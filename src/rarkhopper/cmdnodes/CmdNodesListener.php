@@ -11,8 +11,6 @@ use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 class CmdNodesListener implements Listener{
 
 	/**
-	 * @param DataPacketSendEvent $ev
-	 * @return void
 	 * @priority MONITOR
 	 */
 	public function onPacketSend(DataPacketSendEvent $ev) : void{

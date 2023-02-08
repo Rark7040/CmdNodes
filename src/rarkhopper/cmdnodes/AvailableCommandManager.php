@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace rarkhopper\cmdnodes;
 
-use pocketmine\command\CommandSender;
 use pocketmine\lang\Translatable;
 use pocketmine\network\mcpe\protocol\types\command\CommandData;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
-use rarkhopper\cmdnodes\command\CommandBase;
-use rarkhopper\cmdnodes\command\SubCommandBase;
 use function count;
 use function in_array;
 use function strtolower;
