@@ -21,8 +21,10 @@ abstract class EnumParameter extends CommandParameterBase{
 		return $this->enums;
 	}
 
-	public function appendEnum(string ...$enums) : void{
-		foreach ($enums as $enum){
+	public function setEnums(string ...$enums) : void{
+		$this->enums = [];
+
+		foreach($enums as $enum){
 			$this->enums[] = strtolower($enum);
 		}
 	}
