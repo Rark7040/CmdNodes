@@ -11,7 +11,6 @@ use pocketmine\lang\Translatable;
 use pocketmine\network\mcpe\protocol\types\command\CommandData;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
-use pocketmine\plugin\PluginOwned;
 use pocketmine\Server;
 use function array_values;
 use function count;
@@ -19,7 +18,7 @@ use function in_array;
 use function strtolower;
 use function ucfirst;
 
-abstract class CommandBase extends Command implements IPermissionTestable, PluginOwned{
+abstract class CommandBase extends Command implements IPermissionTestable{
 	/** @var array<SubCommandBase> */
 	private array $subCmds = [];
 
@@ -39,7 +38,7 @@ abstract class CommandBase extends Command implements IPermissionTestable, Plugi
 		$this->onRun($sender, $commandLabel, $args);
 	}
 
-	public function requestCommandData(CommandSender $receiver) : CommandData{
+	public function requestCommandData(?CommandSender $receiver) : CommandData{
 		return new CommandData(
 			$this->getLabel(),
 			$this->getStringDescription(),
@@ -78,11 +77,11 @@ abstract class CommandBase extends Command implements IPermissionTestable, Plugi
 	/**
 	 * @return CommandParameter[][]
 	 */
-	private function getOverloads(CommandSender $receiver) : array{
+	private function getOverloads(?CommandSender $receiver) : array{
 		$overloads = [];
 
 		foreach ($this->subCmds as $subCmd){
-			if(!$subCmd->testPermission($receiver)) continue;
+			if($receiver !== null && !$subCmd->testPermission($receiver)) continue;
 			$overloads[] = $subCmd->getParameters();
 		}
 		return $overloads;
