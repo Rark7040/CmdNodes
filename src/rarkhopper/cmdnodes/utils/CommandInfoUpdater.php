@@ -13,28 +13,9 @@ use rarkhopper\cmdnodes\CommandToDataParser;
 class CommandInfoUpdater{
 	use SingletonTrait;
 
-	/**
-	 * @param array<Command> $cmds
-	 * @param array<Player>  $targets
-	 */
-	public function update(array $cmds, array $targets) : void{
-		foreach($targets as $target){
-			$pk = $this->createUpdatePacket($cmds, $target);
-			$target->getNetworkSession()->sendDataPacket($pk);
-		}
-	}
-
-	/**
-	 * @param array<Command> $cmds
-	 */
-	private function createUpdatePacket(array $cmds, Player $target) : AvailableCommandsPacket{
-		$parser = CommandToDataParser::getInstance();
-		$data = [];
-
-		foreach($cmds as $cmd){
-			$data[] = $parser->parse($cmd, $target);
-		}
-
-		return AvailableCommandsPacket::create($data, [], [], []);
+	public function update(Command $cmd, Player $target) : void{
+		$target->getNetworkSession()->sendDataPacket(
+			AvailableCommandsPacket::create([CommandToDataParser::getInstance()->parse($cmd, $target)], [], [], [])
+		);
 	}
 }

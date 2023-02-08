@@ -9,7 +9,7 @@ use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkPa
 interface ICommandParameter{
 	public function getName() : string;
 	public function getUsageName() : string;
-	public function getNetworkTypeId() : int;
+	public function getNetworkType() : int;
 	public function asNetworkParameter() : NetworkParameter;
 	public function isOptional() : bool;
 	public function getFlags() : int;

@@ -22,14 +22,14 @@ abstract class EnumParameter extends CommandParameterBase{
 		);
 	}
 
-	public function getNetworkTypeId() : int{
+	public function getNetworkType() : int{
 		return AvailableCommandsPacket::ARG_FLAG_ENUM;
 	}
 
 	public function asNetworkParameter() : NetworkParameter{
 		$param = new NetworkParameter();
 		$param->paramName = $this->getName();
-		$param->paramType = AvailableCommandsPacket::ARG_FLAG_VALID | $this->getNetworkTypeId();
+		$param->paramType = AvailableCommandsPacket::ARG_FLAG_VALID | $this->getNetworkType();
 		$param->enum = $this->getEnumObject();
 		$param->flags = $this->getFlags();
 		$param->isOptional = $this->isOptional();
