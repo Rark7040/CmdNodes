@@ -45,7 +45,7 @@
   },
   "autoload": {
     "psr-4": {
-      "rarkhopper\\cmdnodes\\": "src/rarkhopper/cmdnodes/"
+      "rarkhopper\\cmdnodes\\": "./src/rarkhopper/cmdnodes/"
     }
   }
 }
