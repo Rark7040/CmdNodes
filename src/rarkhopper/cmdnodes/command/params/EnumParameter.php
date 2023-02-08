@@ -7,32 +7,18 @@ namespace rarkhopper\cmdnodes\command\params;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
-use function strtolower;
 use function ucfirst;
 
 abstract class EnumParameter extends CommandParameterBase{
-	/** @var array<string> */
-	private array $enums = [];
-
 	/**
 	 * @return array<string>
 	 */
-	public function getEnums() : array{
-		return $this->enums;
-	}
-
-	public function setEnums(string ...$enums) : void{
-		$this->enums = [];
-
-		foreach($enums as $enum){
-			$this->enums[] = strtolower($enum);
-		}
-	}
+	abstract public function getEnums() : array;
 
 	private function getEnumObject() : CommandEnum{
 		return new CommandEnum(
 			ucfirst($this->getName()),
-			$this->enums,
+			$this->getEnums(),
 		);
 	}
 
