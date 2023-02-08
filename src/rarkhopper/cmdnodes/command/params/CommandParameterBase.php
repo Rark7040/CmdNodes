@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace rarkhopper\cmdnodes\params;
+namespace rarkhopper\cmdnodes\command\params;
 
 abstract class CommandParameterBase implements ICommandParameter{
 	/**

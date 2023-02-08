@@ -1,14 +1,15 @@
 <?php
 
 declare(strict_types=1);
+
 namespace rarkhopper\cmdnodes;
 
 use pocketmine\command\Command;
-use pocketmine\command\CommandSender;
 use pocketmine\lang\Translatable;
 use pocketmine\network\mcpe\protocol\types\command\CommandData;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
+use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
 use rarkhopper\cmdnodes\command\CommandBase;
@@ -21,11 +22,11 @@ use function ucfirst;
 final class CommandToDataParser{
 	use SingletonTrait;
 
-	public function parse(Command $cmd, CommandSender $receiver) : CommandData{
+	public function parse(Command $cmd, Player $receiver) : CommandData{
 		return $this->putOverLoad($this->parseNoOverload($cmd), $cmd, $receiver);
 	}
 
-	public function putOverLoad(CommandData $data, Command $cmd, CommandSender $receiver) : CommandData{
+	public function putOverLoad(CommandData $data, Command $cmd, Player $receiver) : CommandData{
 		$data->overloads = $this->getOverloads($cmd, $receiver);
 		return $data;
 	}
@@ -67,7 +68,7 @@ final class CommandToDataParser{
 	/**
 	 * @return CommandParameter[][]
 	 */
-	private function getOverloads(Command $cmd, CommandSender $receiver) : array{
+	private function getOverloads(Command $cmd, Player $receiver) : array{
 		if(!$cmd instanceof CommandBase) return [];
 		return $cmd->getOverloads($receiver);
 	}

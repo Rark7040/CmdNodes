@@ -8,7 +8,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
-use rarkhopper\cmdnodes\params\ICommandParameter;
+use rarkhopper\cmdnodes\command\params\ICommandParameter;
 use function explode;
 
 abstract class SubCommandBase implements IPermissionTestable{
