@@ -66,7 +66,7 @@ abstract class SubCommandBase implements IPermissionTestable{
 	 */
 	abstract protected function onRun(CommandSender $sender, string $usedAlias, array $args) : void;
 
-	public function asParameter() : NetworkParameter{
+	private function asParameter() : NetworkParameter{
 		$label = $this->getLabel();
 		$param = new NetworkParameter();
 		$param->paramName = $label;
@@ -80,7 +80,7 @@ abstract class SubCommandBase implements IPermissionTestable{
 	 * @return array<NetworkParameter>
 	 */
 	public function getParameters() : array{
-		$params = [];
+		$params = [$this->asParameter()];
 
 		foreach($this->params as $param){
 			$params[] = $param->asNetworkParameter();
