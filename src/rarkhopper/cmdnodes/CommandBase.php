@@ -12,19 +12,18 @@ use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
 use pocketmine\Server;
 use function array_values;
+use function count;
+use function in_array;
+use function strtolower;
 use function ucfirst;
 
-abstract class CommandBase extends Command {
+abstract class CommandBase extends Command implements IPermissionTestable {
 	/** @var array<SubCommandBase> */
 	private array $subCmds = [];
 
-	protected function registerSubCommand(SubCommandBase $subCmd) : void{
+	protected function registerSubCommand(SubCommandBase $subCmd) : CommandBase{
 		$this->subCmds[] = $subCmd;
-	}
-
-	public function execute(CommandSender $sender, string $commandLabel, array $args) {
-		if(!$this->testPermission($sender)) return;
-		$this->onRun($sender, $commandLabel, $args);
+		return $this;
 	}
 
 	/**
@@ -32,9 +31,14 @@ abstract class CommandBase extends Command {
 	 */
 	abstract protected function onRun(CommandSender $sender, string $usedAlias, array $args) : void;
 
+	public function execute(CommandSender $sender, string $commandLabel, array $args) {
+		if(!$this->testPermission($sender)) return;
+		$this->onRun($sender, $commandLabel, $args);
+	}
+
 	public function requestCommandData(CommandSender $receiver) : CommandData {
 		return new CommandData(
-			$this->getName(),
+			$this->getLabel(),
 			$this->getStringDescription(),
 			0,
 			0,
@@ -53,10 +57,18 @@ abstract class CommandBase extends Command {
 		return $description;
 	}
 
-	private function getEnum() : CommandEnum{
+	private function getEnum() : ?CommandEnum{
+		$aliases = $this->getAliases();
+
+		if(count($aliases) < 1) return null;
+		$label = strtolower($this->getLabel());
+
+		if(!in_array($label, $aliases, true)){
+			$aliases[] = $label;
+		}
 		return new CommandEnum(
-			ucfirst($this->getName()) . 'Aliases',
-			array_values($this->getAliases())
+			ucfirst($this->getLabel()) . 'Aliases',
+			array_values($aliases)
 		);
 	}
 
@@ -67,7 +79,7 @@ abstract class CommandBase extends Command {
 		$overloads = [];
 
 		foreach ($this->subCmds as $subCmd){
-			if(!$this->testPermissionSilent($receiver)) continue;
+			if(!$subCmd->testPermission($receiver)) continue;
 			$overloads[] = $subCmd->getParameters();
 		}
 		return $overloads;
