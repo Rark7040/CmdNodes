@@ -17,7 +17,7 @@ use function in_array;
 use function strtolower;
 use function ucfirst;
 
-abstract class CommandBase extends Command implements IPermissionTestable {
+abstract class CommandBase extends Command implements IPermissionTestable{
 	/** @var array<SubCommandBase> */
 	private array $subCmds = [];
 
@@ -36,7 +36,7 @@ abstract class CommandBase extends Command implements IPermissionTestable {
 		$this->onRun($sender, $commandLabel, $args);
 	}
 
-	public function requestCommandData(CommandSender $receiver) : CommandData {
+	public function requestCommandData(CommandSender $receiver) : CommandData{
 		return new CommandData(
 			$this->getLabel(),
 			$this->getStringDescription(),
@@ -47,7 +47,7 @@ abstract class CommandBase extends Command implements IPermissionTestable {
 		);
 	}
 
-	private function getStringDescription() : string {
+	private function getStringDescription() : string{
 		$description = $this->getDescription();
 
 		if($description instanceof Translatable){

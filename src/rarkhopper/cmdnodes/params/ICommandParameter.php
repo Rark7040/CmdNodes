@@ -6,7 +6,7 @@ namespace rarkhopper\cmdnodes\params;
 
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
 
-interface ICommandParameter {
+interface ICommandParameter{
 	public function getName() : string;
 	public function getHintingName() : string;
 	public function getNetworkTypeId() : int;

@@ -7,12 +7,11 @@ namespace rarkhopper\cmdnodes;
 use pocketmine\command\CommandSender;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
-use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
 use rarkhopper\cmdnodes\params\ICommandParameter;
 use function explode;
 
-abstract class SubCommandBase implements IPermissionTestable {
+abstract class SubCommandBase implements IPermissionTestable{
 	/** @var array<ICommandParameter> */
 	private array $params = [];
 	private ?string $permission = null;
@@ -25,14 +24,14 @@ abstract class SubCommandBase implements IPermissionTestable {
 		private array $aliases = []
 	) {}
 
-	public function getLabel() : string {
+	public function getLabel() : string{
 		return $this->label;
 	}
 
 	/**
 	 * @return string[]
 	 */
-	public function getAliases() : array {
+	public function getAliases() : array{
 		return $this->aliases;
 	}
 

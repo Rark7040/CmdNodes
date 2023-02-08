@@ -5,7 +5,7 @@ namespace rarkhopper\cmdnodes;
 
 use pocketmine\command\CommandSender;
 
-interface IPermissionTestable {
+interface IPermissionTestable{
 	public function setPermission(?string $permission) : void;
 
 	public function testPermission(CommandSender $target, ?string $permission = null) : bool;

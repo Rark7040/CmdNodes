@@ -17,11 +17,11 @@ abstract class EnumParameter extends CommandParameterBase{
 	/**
 	 * @return array<string>
 	 */
-	public function getEnums() : array {
+	public function getEnums() : array{
 		return $this->enums;
 	}
 
-	public function appendEnum(string ...$enums) : void {
+	public function appendEnum(string ...$enums) : void{
 		foreach ($enums as $enum){
 			$this->enums[] = strtolower($enum);
 		}
@@ -34,11 +34,11 @@ abstract class EnumParameter extends CommandParameterBase{
 		);
 	}
 
-	public function getNetworkTypeId() : int {
+	public function getNetworkTypeId() : int{
 		return AvailableCommandsPacket::ARG_FLAG_ENUM;
 	}
 
-	public function asNetworkParameter() : NetworkParameter {
+	public function asNetworkParameter() : NetworkParameter{
 		$param = new NetworkParameter();
 		$param->paramName = $this->getName();
 		$param->paramType = AvailableCommandsPacket::ARG_FLAG_VALID | $this->getNetworkTypeId();
