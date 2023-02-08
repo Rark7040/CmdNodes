@@ -6,6 +6,7 @@ namespace rarkhopper\cmdnodes;
 
 use pocketmine\command\CommandSender;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
+use rarkhopper\cmdnodes\params\ICommandParameter;
 use function explode;
 
 abstract class SubCommandBase implements IPermissionTestable {
