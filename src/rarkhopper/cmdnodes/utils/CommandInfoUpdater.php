@@ -8,14 +8,14 @@ use pocketmine\command\Command;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
-use rarkhopper\cmdnodes\CommandToDataParser;
+use rarkhopper\cmdnodes\SimpleCommandToDataParser;
 
-class CommandInfoUpdater{
+final class CommandInfoUpdater{
 	use SingletonTrait;
 
 	public function update(Command $cmd, Player $target) : void{
 		$target->getNetworkSession()->sendDataPacket(
-			AvailableCommandsPacket::create([CommandToDataParser::getInstance()->parse($cmd, $target)], [], [], [])
+			AvailableCommandsPacket::create([SimpleCommandToDataParser::getInstance()->parse($cmd, $target)], [], [], [])
 		);
 	}
 }

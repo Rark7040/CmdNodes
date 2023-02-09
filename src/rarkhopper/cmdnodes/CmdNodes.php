@@ -11,9 +11,16 @@ use pocketmine\utils\SingletonTrait;
 use rarkhopper\cmdnodes\exception\CmdNodesException;
 
 final class CmdNodes implements PluginOwned{
-	use SingletonTrait;
+	use SingletonTrait; //virionなのでプラグインごとにインスタンスが生成される
 
 	private ?Plugin $owner = null;
+	private ICmdNodesCommandMap $cmdMap;
+	private ICommandToDataParser $parser;
+
+	public function __construct(){
+		$this->cmdMap = new SimpleCmdNodesCommandMap();
+		$this->parser = new SimpleCommandToDataParser();
+	}
 
 	/**
 	 * @throws CmdNodesException
@@ -33,5 +40,13 @@ final class CmdNodes implements PluginOwned{
 	 */
 	public function getOwningPlugin() : Plugin{
 		return $this->owner ?? throw new CmdNodesException('not yet registered owner');
+	}
+
+	public function getCommandMap() : ICmdNodesCommandMap{
+		return $this->cmdMap;
+	}
+
+	public function getParser() : ICommandToDataParser{
+		return $this->parser;
 	}
 }

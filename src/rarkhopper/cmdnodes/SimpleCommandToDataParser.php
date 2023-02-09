@@ -11,7 +11,6 @@ use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
 use pocketmine\player\Player;
 use pocketmine\Server;
-use pocketmine\utils\SingletonTrait;
 use rarkhopper\cmdnodes\command\CommandBase;
 use function array_values;
 use function count;
@@ -19,26 +18,15 @@ use function in_array;
 use function strtolower;
 use function ucfirst;
 
-final class CommandToDataParser{
-	use SingletonTrait;
-
+final class SimpleCommandToDataParser implements ICommandToDataParser{
 	public function parse(Command $cmd, Player $receiver) : CommandData{
-		return $this->putOverLoad($this->parseNoOverload($cmd), $cmd, $receiver);
-	}
-
-	public function putOverLoad(CommandData $data, Command $cmd, Player $receiver) : CommandData{
-		$data->overloads = $this->getOverloads($cmd, $receiver);
-		return $data;
-	}
-
-	public function parseNoOverload(Command $cmd) : CommandData{
 		return new CommandData(
 			strtolower($cmd->getLabel()),
 			$this->getStringDescription($cmd),
 			0,
 			0,
 			$this->getEnum($cmd),
-			[]
+			$this->getOverloads($cmd, $receiver)
 		);
 	}
 
