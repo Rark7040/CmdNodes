@@ -9,14 +9,10 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\utils\CommandException;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
-use rarkhopper\command_nodes\command\update\IUpdatable;
-use rarkhopper\command_nodes\command\update\UpdatableTrait;
 use function array_shift;
 use function strtolower;
 
-abstract class CommandBase extends Command implements IPermissionTestable, IUpdatable{
-	use UpdatableTrait;
-
+abstract class CommandBase extends Command implements IPermissionTestable{
 	/** @var array<string, SubCommandBase> */
 	private array $subCmds = [];
 	private bool $hasUpdate = true;
@@ -61,11 +57,11 @@ abstract class CommandBase extends Command implements IPermissionTestable, IUpda
 		return $overloads;
 	}
 
-	public function hasUpdate() : bool{
-		return $this->hasUpdate;
+	public function setUpdate(bool $update = true) : void{
+		$this->hasUpdate = $update;
 	}
 
-	public function setUpdate(bool $hasUpdate = true) : void{
-		$this->hasUpdate = $hasUpdate;
+	public function hasUpdate() : bool{
+		return $this->hasUpdate;
 	}
 }

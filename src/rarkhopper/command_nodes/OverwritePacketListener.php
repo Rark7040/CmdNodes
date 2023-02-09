@@ -11,19 +11,19 @@ use pocketmine\Server;
 
 class OverwritePacketListener implements Listener{
 	public function onPacketSend(DataPacketSendEvent $ev) : void{
-		$cmdnodes = CommandNodes::getInstance();
-		$cmdMap = $cmdnodes->getCommandMap();
+		foreach($ev->getPackets() as $pk){
+			if(!$pk instanceof AvailableCommandsPacket) continue;
+			$cmdnodes = CommandNodes::getInstance();
+			$cmdMap = $cmdnodes->getCommandMap();
 
-		if(!$cmdMap->needsUpdate()) return;
-		$cmdMap->unsetUpdateFlags();
-		$cmds = Server::getInstance()->getCommandMap()->getCommands();
+			if(!$cmdMap->needsUpdate()) return;
+			$cmdMap->unsetUpdateFlags();
+			$cmds = Server::getInstance()->getCommandMap()->getCommands();
 
-		foreach($ev->getTargets() as $target){
-			$player = $target->getPlayer();
+			foreach($ev->getTargets() as $target){
+				$player = $target->getPlayer();
 
-			if($player === null) continue;
-			foreach($ev->getPackets() as $pk){
-				if(!$pk instanceof AvailableCommandsPacket) continue;
+				if($player === null) continue;
 				$cmdnodes->getUpdater()->overwrite(
 					$pk,
 					$cmdnodes->getParser(),
@@ -32,5 +32,6 @@ class OverwritePacketListener implements Listener{
 				);
 			}
 		}
+
 	}
 }

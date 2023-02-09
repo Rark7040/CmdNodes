@@ -6,6 +6,7 @@ namespace rarkhopper\command_nodes\utils;
 
 use pocketmine\Server;
 use rarkhopper\command_nodes\command\CommandBase;
+use function var_dump;
 
 final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 	/** @var array<string, CommandBase> */
@@ -66,6 +67,8 @@ final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 
 	public function needsUpdate() : bool{
 		foreach($this->cmds as $cmd){
+			var_dump($cmd::class, $cmd->hasUpdate()? 'true':'false');
+
 			if(!$cmd->hasUpdate()) continue;
 			return true;
 		}
