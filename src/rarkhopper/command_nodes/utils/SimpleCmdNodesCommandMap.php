@@ -67,14 +67,17 @@ final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 		$this->cmds = [];
 	}
 
-	public function getHasUpdateCommands() : array{
-		$cmds = [];
-
+	public function needsUpdate() : bool{
 		foreach($this->cmds as $cmd){
 			if(!$cmd->hasUpdate()) continue;
-			$cmds[$cmd::class] = $cmd;
+			return true;
+		}
+		return false;
+	}
+
+	public function unsetUpdateFlags() : void{
+		foreach($this->cmds as $cmd){
 			$cmd->setUpdate(false);
 		}
-		return $cmds;
 	}
 }

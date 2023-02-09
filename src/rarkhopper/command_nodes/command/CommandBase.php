@@ -15,7 +15,7 @@ use function strtolower;
 abstract class CommandBase extends Command implements IPermissionTestable{
 	/** @var array<string, SubCommandBase> */
 	private array $subCmds = [];
-	private bool $hasUpdate = false;
+	private bool $hasUpdate = true;
 
 	/**
 	 * @param array<string> $args

@@ -17,12 +17,12 @@ final class SimpleCommandDataUpdater implements ICommandDataUpdater{
 		$cmdData = $this->createCommandData(
 			$parser,
 			$target,
-			self::getDefaultCommands()
+			Server::getInstance()->getCommandMap()->getCommands()
 		);
 		$target->getNetworkSession()->sendDataPacket(AvailableCommandsPacket::create($cmdData, [], [], []));
 	}
 
-	public function inject(AvailableCommandsPacket $pk, ICommandToDataParser $parser, Player $target, array $cmds) : void{
+	public function overwrite(AvailableCommandsPacket $pk, ICommandToDataParser $parser, Player $target, array $cmds) : void{
 		$pkData = $pk->commandData;
 		$newData = $this->createCommandData($parser, $target, $cmds);
 		$pk->commandData = array_merge($pkData, $newData);
@@ -44,12 +44,5 @@ final class SimpleCommandDataUpdater implements ICommandDataUpdater{
 			$logger->debug('updated ' . $cmd->getLabel() . ' command data');
 		}
 		return $cmdDataPool;
-	}
-
-	/**
-	 * @return array<Command>
-	 */
-	private static function getDefaultCommands() : array{
-		return Server::getInstance()->getCommandMap()->getCommands();
 	}
 }

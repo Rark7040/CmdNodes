@@ -29,8 +29,7 @@ interface ICmdNodesCommandMap{
 	 */
 	public function getCommands() : array;
 
-	/**
-	 * @return array<string, CommandBase>
-	 */
-	public function getHasUpdateCommands() : array;
+	public function needsUpdate() : bool;
+
+	public function unsetUpdateFlags() : void;
 }

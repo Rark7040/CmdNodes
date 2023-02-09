@@ -14,5 +14,5 @@ interface ICommandDataUpdater{
 	 * @internal
 	 * @param array<Command> $cmds
 	 */
-	public function inject(AvailableCommandsPacket $pk, ICommandToDataParser $parser, Player $target, array $cmds) : void;
+	public function overwrite(AvailableCommandsPacket $pk, ICommandToDataParser $parser, Player $target, array $cmds) : void;
 }
