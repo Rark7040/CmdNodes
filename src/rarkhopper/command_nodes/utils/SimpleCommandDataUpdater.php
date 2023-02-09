@@ -14,13 +14,15 @@ use function array_merge;
 use function array_values;
 
 final class SimpleCommandDataUpdater implements ICommandDataUpdater{
-	public function update(Player $target) : void{
-		$target->getNetworkSession()->syncAvailableCommands();
+	public function update(ICommandToDataParser $parser, Player $target) : void{
+		$target->getNetworkSession()->sendDataPacket(
+			AvailableCommandsPacket::create($this->createCommandData($parser, $target, Server::getInstance()->getCommandMap()->getCommands()), [], [], [])
+		);
 	}
 
-	public function overwrite(AvailableCommandsPacket $pk, ICommandToDataParser $parser, Player $target, array $cmds) : void{
+	public function overwrite(AvailableCommandsPacket $pk, ICommandToDataParser $parser, Player $target) : void{
 		$pkData = $pk->commandData;
-		$newData = $this->createCommandData($parser, $target, $cmds);
+		$newData = $this->createCommandData($parser, $target, Server::getInstance()->getCommandMap()->getCommands());
 		$pk->commandData = array_merge($pkData, $newData);
 	}
 
