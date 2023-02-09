@@ -20,13 +20,15 @@ final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 
 	public function register(string $fallbackPrefix, CommandBase $cmd) : bool{
 		$server = Server::getInstance();
+		$logger = $server->getLogger();
 		$registered = $server->getCommandMap()->register($fallbackPrefix, $cmd);
 
 		if($registered){
 			$this->cmds[$cmd->getLabel()] = $cmd;
+			$logger->debug('registered command. ' . $fallbackPrefix . ':' . $cmd->getLabel());
 
 		}else{
-			$server->getLogger()->warning('already registered command. given ' . $fallbackPrefix . ':' . $cmd->getLabel());
+			$logger->warning('already registered command. ' . $fallbackPrefix . ':' . $cmd->getLabel());
 		}
 		$this->cmds[$cmd->getLabel()] = $cmd;
 
@@ -37,17 +39,18 @@ final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 		$label = $cmd->getLabel();
 		$server = Server::getInstance();
 		$logger = $server->getLogger();
+		$cmdMap = $server->getCommandMap();
 		unset($this->cmds[$label]);
+		$isRegistered = $cmdMap->getCommand($label) !== null;
 
-		$unregistered = $server->getCommandMap()->unregister($cmd);
-
-		if($unregistered){
-			$logger->debug('unregistered /' . $label . 'command. ');
+		if($isRegistered){
+			$logger->debug('unregistered /' . $label . ' command.');
+			$cmdMap->unregister($cmd);
 
 		}else{
-			$logger->warning('not yet registered /' . $label . 'command, but is now unregistered');
+			$logger->warning('not yet registered /' . $label . ' command, but is now unregistered.');
 		}
-		return $unregistered;
+		return $isRegistered;
 	}
 
 	public function getCommand(string $label) : ?CommandBase{
