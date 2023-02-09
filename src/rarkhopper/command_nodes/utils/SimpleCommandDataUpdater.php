@@ -33,7 +33,7 @@ final class SimpleCommandDataUpdater implements ICommandDataUpdater{
 		$logger = Server::getInstance()->getLogger();
 
 		foreach($cmds as $cmd){
-			if(!$cmd->testPermissionSilent($target) || isset($cmdDataPool[$cmd::class])) continue;
+			if(!$cmd->testPermissionSilent($target)) continue;
 			$cmdDataPool[$cmd::class] = $parser->parse($cmd, $target);
 
 			if(!$cmd instanceof CommandBase) continue;
