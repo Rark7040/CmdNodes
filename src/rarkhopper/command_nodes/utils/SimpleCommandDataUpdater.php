@@ -11,6 +11,7 @@ use pocketmine\player\Player;
 use pocketmine\Server;
 use rarkhopper\command_nodes\command\CommandBase;
 use function array_merge;
+use function array_values;
 
 final class SimpleCommandDataUpdater implements ICommandDataUpdater{
 	public function update(Player $target) : void{
@@ -32,12 +33,12 @@ final class SimpleCommandDataUpdater implements ICommandDataUpdater{
 		$logger = Server::getInstance()->getLogger();
 
 		foreach($cmds as $cmd){
-			if(!$cmd->testPermissionSilent($target)) continue;
-			$cmdDataPool[] = $parser->parse($cmd, $target);
+			if(!$cmd->testPermissionSilent($target) || isset($cmdDataPool[$cmd::class])) continue;
+			$cmdDataPool[$cmd::class] = $parser->parse($cmd, $target);
 
 			if(!$cmd instanceof CommandBase) continue;
 			$logger->debug('updated ' . $cmd->getLabel() . ' command data');
 		}
-		return $cmdDataPool;
+		return array_values($cmdDataPool);
 	}
 }
