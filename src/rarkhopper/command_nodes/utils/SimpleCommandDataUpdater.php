@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\utils;
 
-use pocketmine\command\Command;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandData;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use rarkhopper\command_nodes\command\CommandBase;
-use function array_merge;
 use function array_values;
 
 final class SimpleCommandDataUpdater implements ICommandDataUpdater{
@@ -19,20 +17,17 @@ final class SimpleCommandDataUpdater implements ICommandDataUpdater{
 	}
 
 	public function overwrite(AvailableCommandsPacket $pk, ICommandToDataParser $parser, Player $target) : void{
-		$pkData = $pk->commandData;
-		$newData = $this->createCommandData($parser, $target, Server::getInstance()->getCommandMap()->getCommands());
-		$pk->commandData = array_merge($pkData, $newData);
+		$pk->commandData = $this->createCommandData($parser, $target);
 	}
 
 	/**
-	 * @param array<Command> $cmds
 	 * @return array<CommandData>
 	 */
-	private function createCommandData(ICommandToDataParser $parser, Player $target, array $cmds) : array{
+	private function createCommandData(ICommandToDataParser $parser, Player $target) : array{
 		$cmdDataPool = [];
 		$logger = Server::getInstance()->getLogger();
 
-		foreach($cmds as $cmd){
+		foreach(Server::getInstance()->getCommandMap()->getCommands() as $cmd){
 			if(!$cmd->testPermissionSilent($target)) continue;
 			$cmdDataPool[] = $parser->parse($cmd, $target);
 
