@@ -7,7 +7,6 @@ namespace rarkhopper\command_nodes;
 use pocketmine\event\Listener;
 use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
-use pocketmine\Server;
 
 class OverwritePacketListener implements Listener{
 	public function onPacketSend(DataPacketSendEvent $ev) : void{
@@ -23,7 +22,7 @@ class OverwritePacketListener implements Listener{
 					$pk,
 					$cmdnodes->getParser(),
 					$player,
-					$cmdnodes->getCommandMap()->getCommands()
+					$cmdnodes->getCommandMap()->getHasUpdateCommands()
 				);
 			}
 		}

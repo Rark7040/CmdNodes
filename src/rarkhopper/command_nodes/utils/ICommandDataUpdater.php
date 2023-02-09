@@ -9,11 +9,9 @@ use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\player\Player;
 
 interface ICommandDataUpdater{
+	public function update(ICommandToDataParser $parser, Player $target) : void;
 	/**
-	 * @param array<Command> $cmds
-	 */
-	public function update(ICommandToDataParser $parser, Player $target, array $cmds) : void;
-	/**
+	 * @internal
 	 * @param array<Command> $cmds
 	 */
 	public function inject(AvailableCommandsPacket $pk, ICommandToDataParser $parser, Player $target, array $cmds) : void;

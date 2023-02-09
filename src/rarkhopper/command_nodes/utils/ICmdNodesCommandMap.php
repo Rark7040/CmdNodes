@@ -31,4 +31,9 @@ interface ICmdNodesCommandMap{
 	 * @return array<string, CommandBase>
 	 */
 	public function getCommands() : array;
+
+	/**
+	 * @return array<string, CommandBase>
+	 */
+	public function getHasUpdateCommands() : array;
 }
