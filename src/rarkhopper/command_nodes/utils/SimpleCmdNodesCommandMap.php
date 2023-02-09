@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\utils;
 
-use pocketmine\command\CommandSender;
 use pocketmine\Server;
 use rarkhopper\command_nodes\command\CommandBase;
 
@@ -24,13 +23,13 @@ final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 		$registered = $server->getCommandMap()->register($fallbackPrefix, $cmd);
 
 		if($registered){
-			$this->cmds[$cmd->getLabel()] = $cmd;
+			$this->cmds[$cmd::class] = $cmd;
 			$logger->debug('registered command. ' . $fallbackPrefix . ':' . $cmd->getLabel());
 
 		}else{
 			$logger->warning('already registered command. ' . $fallbackPrefix . ':' . $cmd->getLabel());
 		}
-		$this->cmds[$cmd->getLabel()] = $cmd;
+		$this->cmds[$cmd::class] = $cmd;
 
 		return $registered;
 	}
@@ -40,7 +39,7 @@ final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 		$server = Server::getInstance();
 		$logger = $server->getLogger();
 		$cmdMap = $server->getCommandMap();
-		unset($this->cmds[$label]);
+		unset($this->cmds[$cmd::class]);
 		$isRegistered = $cmdMap->getCommand($label) !== null;
 
 		if($isRegistered){
@@ -53,23 +52,12 @@ final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 		return $isRegistered;
 	}
 
-	public function getCommand(string $label) : ?CommandBase{
-		return $this->cmds[$label] ?? null;
+	public function getCommand(string $commandClass) : ?CommandBase{
+		return $this->cmds[$commandClass] ?? null;
 	}
 
 	public function getCommands() : array{
 		return $this->cmds;
-	}
-
-	/**
-	 * @param array<string> $args
-	 */
-	public function dispatch(CommandSender $sender, string $label, array $args) : bool{
-		$cmd = $this->getCommand($label);
-
-		if($cmd === null) return false;
-		$cmd->execute($sender, $label, $args);
-		return true;
 	}
 
 	public function clearCommands() : void{
@@ -84,7 +72,7 @@ final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 
 		foreach($this->cmds as $cmd){
 			if(!$cmd->hasUpdate()) continue;
-			$cmds[$cmd->getLabel()] = $cmd;
+			$cmds[$cmd::class] = $cmd;
 			$cmd->setUpdate(false);
 		}
 		return $cmds;
