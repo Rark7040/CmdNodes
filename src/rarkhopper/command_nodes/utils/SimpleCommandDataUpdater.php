@@ -23,7 +23,7 @@ final class SimpleCommandDataUpdater implements ICommandDataUpdater{
 		$target->getNetworkSession()->sendDataPacket(AvailableCommandsPacket::create($cmdData, [], [], []));
 	}
 
-	public function inject(AvailableCommandsPacket &$pk, ICommandToDataParser $parser, Player $target, array $cmds) : void{
+	public function inject(AvailableCommandsPacket $pk, ICommandToDataParser $parser, Player $target, array $cmds) : void{
 		$pkData = $pk->commandData;
 		$newData = $this->createCommandData($parser, $target, $cmds);
 		$pk->commandData = array_merge($pkData, $newData);

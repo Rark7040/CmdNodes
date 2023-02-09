@@ -23,7 +23,7 @@ class OverwritePacketListener implements Listener{
 					$pk,
 					$cmdnodes->getParser(),
 					$player,
-					...Server::getInstance()->getCommandMap()->getCommands()
+					$cmdnodes->getCommandMap()->getCommands()
 				);
 			}
 		}
