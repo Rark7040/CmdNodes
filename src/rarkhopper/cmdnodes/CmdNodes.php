@@ -9,6 +9,10 @@ use pocketmine\plugin\PluginOwned;
 use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
 use rarkhopper\cmdnodes\exception\CmdNodesException;
+use rarkhopper\cmdnodes\utils\ICmdNodesCommandMap;
+use rarkhopper\cmdnodes\utils\ICommandToDataParser;
+use rarkhopper\cmdnodes\utils\SimpleCmdNodesCommandMap;
+use rarkhopper\cmdnodes\utils\SimpleCommandToDataParser;
 
 final class CmdNodes implements PluginOwned{
 	use SingletonTrait; //virionなのでプラグインごとにインスタンスが生成される
