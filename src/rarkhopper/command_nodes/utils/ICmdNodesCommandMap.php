@@ -20,9 +20,9 @@ interface ICmdNodesCommandMap{
 	public function clearCommands() : void;
 
 	/**
-	 * @phpstan-param class-string<Command> $commandClass
+	 * @phpstan-param class-string<CommandBase> $commandClass
 	 */
-	public function getCommand(string $commandClass) : ?Command;
+	public function getCommand(string $commandClass) : ?CommandBase;
 
 	/**
 	 * @return array<string, CommandBase>
