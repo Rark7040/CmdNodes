@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\utils;
 
-use pocketmine\command\Command;
 use rarkhopper\command_nodes\command\CommandBase;
 
 interface ICmdNodesCommandMap{

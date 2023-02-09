@@ -13,13 +13,8 @@ use rarkhopper\command_nodes\command\CommandBase;
 use function array_merge;
 
 final class SimpleCommandDataUpdater implements ICommandDataUpdater{
-	public function update(ICommandToDataParser $parser, Player $target) : void{
-		$cmdData = $this->createCommandData(
-			$parser,
-			$target,
-			Server::getInstance()->getCommandMap()->getCommands()
-		);
-		$target->getNetworkSession()->sendDataPacket(AvailableCommandsPacket::create($cmdData, [], [], []));
+	public function update(Player $target) : void{
+		$target->getNetworkSession()->syncAvailableCommands();
 	}
 
 	public function overwrite(AvailableCommandsPacket $pk, ICommandToDataParser $parser, Player $target, array $cmds) : void{
