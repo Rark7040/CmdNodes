@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\cmdnodes;
+namespace rarkhopper\command_nodes;
 
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
-use rarkhopper\cmdnodes\exception\CmdNodesException;
-use rarkhopper\cmdnodes\utils\ICmdNodesCommandMap;
-use rarkhopper\cmdnodes\utils\ICommandDataUpdater;
-use rarkhopper\cmdnodes\utils\ICommandToDataParser;
-use rarkhopper\cmdnodes\utils\SimpleCmdNodesCommandMap;
-use rarkhopper\cmdnodes\utils\SimpleCommandDataUpdater;
-use rarkhopper\cmdnodes\utils\SimpleCommandToDataParser;
+use rarkhopper\command_nodes\exception\CmdNodesException;
+use rarkhopper\command_nodes\utils\ICmdNodesCommandMap;
+use rarkhopper\command_nodes\utils\ICommandDataUpdater;
+use rarkhopper\command_nodes\utils\ICommandToDataParser;
+use rarkhopper\command_nodes\utils\SimpleCmdNodesCommandMap;
+use rarkhopper\command_nodes\utils\SimpleCommandDataUpdater;
+use rarkhopper\command_nodes\utils\SimpleCommandToDataParser;
 
-final class CmdNodes implements PluginOwned{
+final class CommandNodes implements PluginOwned{
 	use SingletonTrait; //virionなのでプラグインごとにインスタンスが生成される
 
 	private ?Plugin $owner = null;

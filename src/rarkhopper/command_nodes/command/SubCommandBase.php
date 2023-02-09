@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace rarkhopper\cmdnodes\command;
+namespace rarkhopper\command_nodes\command;
 
 use pocketmine\command\CommandSender;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
-use rarkhopper\cmdnodes\command\params\ICommandParameter;
+use rarkhopper\command_nodes\command\params\ICommandParameter;
 use function explode;
 
 abstract class SubCommandBase implements IPermissionTestable{

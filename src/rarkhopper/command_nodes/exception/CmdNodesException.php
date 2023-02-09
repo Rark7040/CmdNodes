@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\cmdnodes\exception;
+namespace rarkhopper\command_nodes\exception;
 
 use RuntimeException;
 

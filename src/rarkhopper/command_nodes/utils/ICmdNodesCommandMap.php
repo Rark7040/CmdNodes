@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\cmdnodes\utils;
+namespace rarkhopper\command_nodes\utils;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use rarkhopper\cmdnodes\command\CommandBase;
+use rarkhopper\command_nodes\command\CommandBase;
 
 interface ICmdNodesCommandMap{
 	/**
@@ -20,6 +20,8 @@ interface ICmdNodesCommandMap{
 	 * @param array<string> $args
 	 */
 	public function dispatch(CommandSender $sender, string $label, array $args) : bool;
+
+	public function unregister(CommandBase $cmd) : bool;
 
 	public function clearCommands() : void;
 

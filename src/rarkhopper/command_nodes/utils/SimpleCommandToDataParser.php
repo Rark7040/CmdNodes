@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\cmdnodes\utils;
+namespace rarkhopper\command_nodes\utils;
 
 use pocketmine\command\Command;
 use pocketmine\lang\Translatable;
@@ -11,7 +11,7 @@ use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
 use pocketmine\player\Player;
 use pocketmine\Server;
-use rarkhopper\cmdnodes\command\CommandBase;
+use rarkhopper\command_nodes\command\CommandBase;
 use function array_values;
 use function count;
 use function in_array;

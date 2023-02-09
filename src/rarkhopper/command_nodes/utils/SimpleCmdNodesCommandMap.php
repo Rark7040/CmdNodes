@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\cmdnodes\utils;
+namespace rarkhopper\command_nodes\utils;
 
 use pocketmine\command\CommandSender;
 use pocketmine\Server;
-use rarkhopper\cmdnodes\command\CommandBase;
+use rarkhopper\command_nodes\command\CommandBase;
 
 final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 	/** @var array<string, CommandBase> */

@@ -1,5 +1,5 @@
 {
-  "name": "rarkhopper/cmdnodes",
+  "name": "rarkhopper/command-nodes",
   "license": "Polyform internal use v1.0.0",
   "description": "",
   "require": {
@@ -45,7 +45,7 @@
   },
   "autoload": {
     "psr-4": {
-      "rarkhopper\\cmdnodes\\": "./src/rarkhopper/cmdnodes/"
+      "rarkhopper\\command_nodes\\": "./src/rarkhopper/command_nodes/"
     }
   }
 }
