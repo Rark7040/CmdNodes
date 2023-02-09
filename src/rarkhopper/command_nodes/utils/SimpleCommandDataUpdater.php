@@ -13,35 +13,38 @@ use rarkhopper\command_nodes\command\CommandBase;
 use function array_merge;
 
 final class SimpleCommandDataUpdater implements ICommandDataUpdater{
-	public function update(ICommandToDataParser $parser, Player $target, Command ...$cmds) : void{
-		$target->getNetworkSession()->sendDataPacket(
-			AvailableCommandsPacket::create($this->createCommandData(
-				$parser,
-				$target,
-				...array_merge(self::getDefaultCommands(), $cmds)
-			), [], [], [])
+
+	public function update(ICommandToDataParser $parser, Player $target, array $cmds) : void{
+		$cmdData = $this->createCommandData(
+			$parser,
+			$target,
+			array_merge(self::getDefaultCommands(), $cmds)
 		);
+		$target->getNetworkSession()->sendDataPacket(AvailableCommandsPacket::create($cmdData, [], [], []));
 	}
 
-	public function inject(AvailableCommandsPacket &$pk, ICommandToDataParser $parser, Player $target, Command ...$cmds) : void{
-		$pk->commandData = $this->createCommandData($parser, $target, ...$cmds);
+	public function inject(AvailableCommandsPacket &$pk, ICommandToDataParser $parser, Player $target, array $cmds) : void{
+		$pkData = $pk->commandData;
+		$newData = $this->createCommandData($parser, $target, $cmds);
+		$pk->commandData = array_merge($pkData, $newData);
 	}
 
 	/**
+	 * @param array<Command> $cmds
 	 * @return array<CommandData>
 	 */
-	private function createCommandData(ICommandToDataParser $parser, Player $target, Command ...$cmds) : array{
+	private function createCommandData(ICommandToDataParser $parser, Player $target, array $cmds) : array{
 		$cmdDataPool = [];
 		$logger = Server::getInstance()->getLogger();
 
-		foreach(array_merge(self::getDefaultCommands(), $cmds) as $cmd){
+		foreach($cmds as $cmd){
 			if(!$cmd->testPermissionSilent($target)) continue;
-			$cmdDataPool[$cmd->getLabel()] = $parser->parse($cmd, $target); //fix duplicate command by array key
+			$cmdDataPool[] = $parser->parse($cmd, $target);
 
 			if(!$cmd instanceof CommandBase) continue;
 			$logger->debug('updated ' . $cmd->getLabel() . ' command data');
 		}
-		return array_values($cmdDataPool);
+		return $cmdDataPool;
 	}
 
 	/**
