@@ -18,7 +18,6 @@ class OverwritePacketListener implements Listener{
 
 			if(!$cmdMap->needsUpdate()) return;
 			$cmdMap->unsetUpdateFlags();
-			$cmds = Server::getInstance()->getCommandMap()->getCommands();
 
 			foreach($ev->getTargets() as $target){
 				$player = $target->getPlayer();
@@ -27,8 +26,7 @@ class OverwritePacketListener implements Listener{
 				$cmdnodes->getUpdater()->overwrite(
 					$pk,
 					$cmdnodes->getParser(),
-					$player,
-					$cmds
+					$player
 				);
 			}
 		}
