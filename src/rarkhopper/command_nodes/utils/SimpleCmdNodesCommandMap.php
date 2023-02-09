@@ -20,18 +20,15 @@ final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 	public function register(string $fallbackPrefix, CommandBase $cmd) : bool{
 		$server = Server::getInstance();
 		$logger = $server->getLogger();
-		$registered = $server->getCommandMap()->register($fallbackPrefix, $cmd);
 
-		if($registered){
-			$this->cmds[$cmd::class] = $cmd;
-			$logger->debug('registered command. ' . $fallbackPrefix . ':' . $cmd->getLabel());
-
-		}else{
+		if(isset($this->cmds[$cmd::class])){
 			$logger->warning('already registered command. ' . $fallbackPrefix . ':' . $cmd->getLabel());
+			return false;
 		}
 		$this->cmds[$cmd::class] = $cmd;
-
-		return $registered;
+		$logger->debug('registered command. ' . $fallbackPrefix . ':' . $cmd->getLabel());
+		$server->getCommandMap()->register($fallbackPrefix, $cmd);
+		return true;
 	}
 
 	public function unregister(CommandBase $cmd) : bool{
