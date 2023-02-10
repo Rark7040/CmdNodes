@@ -22,31 +22,25 @@ use ReflectionException;
 
 final class CommandNodes implements PluginOwned{
 	private ?RegisteredListener $registeredListener = null;
+	private ICmdNodesCommandMap $cmdMap;
+	private ICommandToDataParser $parser;
+	private ICommandDataUpdater $updater;
 
 	public function __construct(
 		private Plugin $owner,
-		private ICmdNodesCommandMap $cmdMap,
-		private ICommandToDataParser $parser,
-		private ICommandDataUpdater $updater
+		?ICmdNodesCommandMap $cmdMap = null,
+		?ICommandToDataParser $parser = null,
+		?ICommandDataUpdater $updater = null
 	){
-		$this->cmdMap = new SimpleCmdNodesCommandMap();
-		$this->parser = new SimpleCommandToDataParser();
-		$this->updater = new SimpleCommandDataUpdater();
-	}
-
-	public static function create(Plugin $owner) : CommandNodes{
-		return new self(
-			$owner,
-			new SimpleCmdNodesCommandMap(),
-			new SimpleCommandToDataParser(),
-			new SimpleCommandDataUpdater()
-		);
+		$this->cmdMap = $cmdMap ?? new SimpleCmdNodesCommandMap();
+		$this->parser = $parser ?? new SimpleCommandToDataParser();
+		$this->updater = $updater ?? new SimpleCommandDataUpdater();
 	}
 
 	/**
 	 * @throws ReflectionException
 	 */
-	public function enableCommandPacketOverwrite() : void{
+	public function enable() : void{
 		$logger = Server::getInstance()->getLogger();
 
 		if($this->registeredListener !== null){
@@ -78,11 +72,7 @@ final class CommandNodes implements PluginOwned{
 		$logger->debug('enabled listener in ' . $this::class);
 	}
 
-	public function isEnabled() : bool{
-		return $this->registeredListener !== null;
-	}
-
-	public function disableCommandPacketOverwrite() : void{
+	public function disable() : void{
 		$server = Server::getInstance();
 		$logger = $server->getLogger();
 
@@ -92,6 +82,10 @@ final class CommandNodes implements PluginOwned{
 		}
 		HandlerListManager::global()->unregisterAll($this->registeredListener);
 		$logger->debug('disabled listener in ' . $this::class);
+	}
+
+	public function isEnabled() : bool{
+		return $this->registeredListener !== null;
 	}
 
 	public function getOwningPlugin() : Plugin{
