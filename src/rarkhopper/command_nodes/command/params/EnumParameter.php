@@ -27,12 +27,8 @@ abstract class EnumParameter extends CommandParameterBase{
 	}
 
 	public function asNetworkParameter() : NetworkParameter{
-		$param = new NetworkParameter();
-		$param->paramName = $this->getName();
-		$param->paramType = AvailableCommandsPacket::ARG_FLAG_VALID | $this->getNetworkType();
+		$param = parent::asNetworkParameter();
 		$param->enum = $this->getEnumObject();
-		$param->flags = $this->getFlags();
-		$param->isOptional = $this->isOptional();
 		return $param;
 	}
 }

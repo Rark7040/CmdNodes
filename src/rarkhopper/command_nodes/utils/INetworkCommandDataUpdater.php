@@ -8,7 +8,7 @@ use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandData;
 use pocketmine\player\Player;
 
-interface ICommandDataUpdater{
+interface INetworkCommandDataUpdater{
 	/**
 	 * @param Player $target {@see AvailableCommandsPacket}によって利用可能なコマンドの情報を更新するプレイヤー
 	 */

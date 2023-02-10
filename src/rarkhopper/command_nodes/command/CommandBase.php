@@ -6,23 +6,16 @@ namespace rarkhopper\command_nodes\command;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\utils\CommandException;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
 use function array_shift;
 use function strtolower;
 
-abstract class CommandBase extends Command implements IPermissionTestable{
+abstract class CommandBase extends Command implements ICommandNodesCommand{
 	/** @var array<string, SubCommandBase> */
 	private array $subCmds = [];
 
-	/**
-	 * コマンドが実行されたときに呼び出される関数
-	 * @param CommandSender $sender コマンドを実行したプレイヤー
-	 * @param array<string> $args   コマンドライン引数
-	 * @throws CommandException 内部で不整合により処理を中断する場合にはこの例外を投げてください
-	 */
-	abstract protected function onRun(CommandSender $sender, array $args) : void;
+	abstract public function onRun(CommandSender $sender, array $args) : void;
 
 	/**
 	 * @param SubCommandBase $subCmd このコマンドの1つ目の引数となる文字列を持つサブコマンド

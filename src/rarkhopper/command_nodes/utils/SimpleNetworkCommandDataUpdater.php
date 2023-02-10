@@ -14,7 +14,7 @@ use function array_values;
 /**
  * @internal
  */
-final class SimpleCommandDataUpdater implements ICommandDataUpdater{
+final class SimpleNetworkCommandDataUpdater implements INetworkCommandDataUpdater{
 	public function update(Player $target) : void{
 		$target->getNetworkSession()->syncAvailableCommands();
 	}

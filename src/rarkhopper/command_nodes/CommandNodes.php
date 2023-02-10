@@ -13,34 +13,34 @@ use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\Server;
 use rarkhopper\command_nodes\utils\ICmdNodesCommandMap;
-use rarkhopper\command_nodes\utils\ICommandDataUpdater;
 use rarkhopper\command_nodes\utils\ICommandToDataParser;
+use rarkhopper\command_nodes\utils\INetworkCommandDataUpdater;
 use rarkhopper\command_nodes\utils\SimpleCmdNodesCommandMap;
-use rarkhopper\command_nodes\utils\SimpleCommandDataUpdater;
 use rarkhopper\command_nodes\utils\SimpleCommandToDataParser;
+use rarkhopper\command_nodes\utils\SimpleNetworkCommandDataUpdater;
 use ReflectionException;
 
 final class CommandNodes implements PluginOwned{
 	private ?RegisteredListener $registeredListener = null;
 	private ICmdNodesCommandMap $cmdMap;
 	private ICommandToDataParser $parser;
-	private ICommandDataUpdater $updater;
+	private INetworkCommandDataUpdater $updater;
 
 	/**
-	 * @param Plugin                    $owner   呼び出し元のプラグイン
-	 * @param ICmdNodesCommandMap|null  $cmdMap  nullが指定された場合、{@see SimpleCmdNodesCommandMap}が代入されます
-	 * @param ICommandToDataParser|null $parser  nullが指定された場合、{@see SimpleCommandToDataParser}が代入されます
-	 * @param ICommandDataUpdater|null  $updater nullが指定された場合、{@see SimpleCommandDataUpdater}が代入されます
+	 * @param Plugin                          $owner   呼び出し元のプラグイン
+	 * @param ICmdNodesCommandMap|null        $cmdMap  nullが指定された場合、{@see SimpleCmdNodesCommandMap}が代入されます
+	 * @param ICommandToDataParser|null       $parser  nullが指定された場合、{@see SimpleCommandToDataParser}が代入されます
+	 * @param INetworkCommandDataUpdater|null $updater nullが指定された場合、{@see SimpleNetworkCommandDataUpdater}が代入されます
 	 */
 	public function __construct(
 		private Plugin $owner,
 		?ICmdNodesCommandMap $cmdMap = null,
 		?ICommandToDataParser $parser = null,
-		?ICommandDataUpdater $updater = null
+		?INetworkCommandDataUpdater $updater = null
 	){
 		$this->cmdMap = $cmdMap ?? new SimpleCmdNodesCommandMap();
 		$this->parser = $parser ?? new SimpleCommandToDataParser();
-		$this->updater = $updater ?? new SimpleCommandDataUpdater();
+		$this->updater = $updater ?? new SimpleNetworkCommandDataUpdater();
 	}
 
 	/**
@@ -113,7 +113,7 @@ final class CommandNodes implements PluginOwned{
 		return $this->parser;
 	}
 
-	public function getUpdater() : ICommandDataUpdater{
+	public function getUpdater() : INetworkCommandDataUpdater{
 		return $this->updater;
 	}
 }
