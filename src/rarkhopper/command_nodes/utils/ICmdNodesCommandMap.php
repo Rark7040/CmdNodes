@@ -14,14 +14,17 @@ interface ICmdNodesCommandMap{
 
 	public function register(string $fallbackPrefix, CommandBase $cmd) : bool;
 
-	public function unregister(CommandBase $cmd) : bool;
+	/**
+	 * @phpstan-param class-string<CommandBase> $cmdClass
+	 */
+	public function unregister(string $cmdClass) : bool;
 
 	public function clearCommands() : void;
 
 	/**
-	 * @phpstan-param class-string<CommandBase> $commandClass
+	 * @phpstan-param class-string<CommandBase> $cmdClass
 	 */
-	public function getCommand(string $commandClass) : ?CommandBase;
+	public function getCommand(string $cmdClass) : ?CommandBase;
 
 	/**
 	 * @return array<string, CommandBase>

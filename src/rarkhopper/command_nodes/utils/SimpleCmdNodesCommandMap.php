@@ -31,26 +31,24 @@ final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 		return true;
 	}
 
-	public function unregister(CommandBase $cmd) : bool{
-		$label = $cmd->getLabel();
+	public function unregister(string $cmdClass) : bool{
 		$server = Server::getInstance();
 		$logger = $server->getLogger();
 		$cmdMap = $server->getCommandMap();
-		unset($this->cmds[$cmd::class]);
-		$isRegistered = $cmdMap->getCommand($label) !== null;
+		$cmd = $this->cmds[$cmdClass] ?? null;
 
-		if($isRegistered){
-			$logger->debug('unregistered /' . $label . ' command.');
-			$cmdMap->unregister($cmd);
-
-		}else{
-			$logger->warning('not yet registered /' . $label . ' command, but is now unregistered.');
+		if($cmd === null){
+			$logger->warning('not yet registered ' . $cmdClass . ', but is now trying to unregister.');
+			return false;
 		}
-		return $isRegistered;
+		$logger->debug('unregistered /' . $cmd->getLabel() . ' command.');
+		$cmdMap->unregister($cmd);
+		unset($this->cmds[$cmdClass]);
+		return true;
 	}
 
-	public function getCommand(string $commandClass) : ?CommandBase{
-		return $this->cmds[$commandClass] ?? null;
+	public function getCommand(string $cmdClass) : ?CommandBase{
+		return $this->cmds[$cmdClass] ?? null;
 	}
 
 	public function getCommands() : array{
@@ -59,7 +57,7 @@ final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 
 	public function clearCommands() : void{
 		foreach($this->cmds as $cmd){
-			$this->unregister($cmd);
+			$this->unregister($cmd::class);
 		}
 		$this->cmds = [];
 	}
