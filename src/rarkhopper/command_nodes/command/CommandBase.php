@@ -15,14 +15,19 @@ use function strtolower;
 abstract class CommandBase extends Command implements IPermissionTestable{
 	/** @var array<string, SubCommandBase> */
 	private array $subCmds = [];
-	private bool $hasUpdate = false;
 
 	/**
-	 * @param array<string> $args
-	 * @throws CommandException
+	 * コマンドが実行されたときに呼び出される関数
+	 * @param CommandSender $sender コマンドを実行したプレイヤー
+	 * @param array<string> $args   コマンドライン引数
+	 * @throws CommandException 内部で不整合により処理を中断する場合にはこの例外を投げてください
 	 */
 	abstract protected function onRun(CommandSender $sender, array $args) : void;
 
+	/**
+	 * @param SubCommandBase $subCmd 1つ目の引数となる文字列を持つサブコマンド
+	 * @return $this
+	 */
 	protected function registerSubCommand(SubCommandBase $subCmd) : CommandBase{
 		$this->subCmds[strtolower($subCmd->getLabel())] = $subCmd;
 		return $this;
@@ -45,23 +50,15 @@ abstract class CommandBase extends Command implements IPermissionTestable{
 	}
 
 	/**
+	 * @internal
 	 * @return CommandParameter[][]
 	 */
-	public function getOverloads(CommandSender $receiver) : array{
+	final public function getOverloads(CommandSender $receiver) : array{
 		$overloads = [];
-
-		foreach ($this->subCmds as $subCmd){
+		foreach($this->subCmds as $subCmd){
 			if(!$subCmd->testPermission($receiver)) continue;
 			$overloads[] = $subCmd->getParameters();
 		}
 		return $overloads;
-	}
-
-	public function setUpdate(bool $update = true) : void{
-		$this->hasUpdate = $update;
-	}
-
-	public function hasUpdate() : bool{
-		return $this->hasUpdate;
 	}
 }

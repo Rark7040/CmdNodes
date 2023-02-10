@@ -11,6 +11,8 @@ use pocketmine\player\Player;
 interface ICommandToDataParser{
 	/**
 	 * @internal
+	 * @param Command $cmd      {@see CommandData}を作成するコマンド
+	 * @param Player  $receiver {@see AvailableCommandsPacket}を受け取るプレイヤー
 	 */
 	public function parse(Command $cmd, Player $receiver) : CommandData;
 }

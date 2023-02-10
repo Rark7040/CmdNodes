@@ -5,8 +5,10 @@ declare(strict_types = 1);
 namespace rarkhopper\command_nodes\command;
 
 use pocketmine\command\CommandSender;
+use pocketmine\command\utils\CommandException;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
+use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
 use rarkhopper\command_nodes\command\params\ICommandParameter;
 use function explode;
@@ -17,7 +19,8 @@ abstract class SubCommandBase implements IPermissionTestable{
 	private ?string $permission = null;
 
 	/**
-	 * @param array<string> $aliases
+	 * @param string        $label   このサブコマンドが{@see CommandBase}から見て1つ目のサブコマンドの場合、/foo barのbarの部分にあたる文字列
+	 * @param array<string> $aliases 省略名を格納した配列
 	 */
 	public function __construct(
 		private string $label,
@@ -25,7 +28,10 @@ abstract class SubCommandBase implements IPermissionTestable{
 	) {}
 
 	/**
-	 * @param array<string> $args
+	 * コマンドが実行されたときに呼び出される関数
+	 * @param CommandSender $sender コマンドを実行したプレイヤー
+	 * @param array<string> $args   コマンドライン引数
+	 * @throws CommandException 内部で不整合により処理を中断する場合にはこの例外を投げてください
 	 */
 	abstract public function onRun(CommandSender $sender, array $args) : void;
 
@@ -56,17 +62,33 @@ abstract class SubCommandBase implements IPermissionTestable{
 		return false;
 	}
 
-	protected function appendParameter(ICommandParameter $param, ?int $position = null) : SubCommandBase{
-		if($position === null){
-			$this->params[] = $param;
-
-		}else{
-			$this->params[$position] = $param;
-		}
+	/**
+	 * 引数となる値を位置を指定して追加します
+	 *
+	 * @param ICommandParameter $param    引数となる値
+	 * @param int               $position 引数の位置 barがこのサブコマンドのラベルで、0にbazを指定した場合/foo bar bazのようなシンタックスになる
+	 * @return $this
+	 */
+	protected function setParameter(ICommandParameter $param, int $position) : SubCommandBase{
+		$this->params[$position] = $param;
 		return $this;
 	}
 
-	private function asParameter() : NetworkParameter{
+	/**
+	 * 引数となる値を末尾に追加します
+	 *
+	 * @param ICommandParameter $param 引数となる値
+	 * @return $this
+	 */
+	protected function appendParameter(ICommandParameter $param) : SubCommandBase{
+		$this->params[] = $param;
+		return $this;
+	}
+
+	/**
+	 * @return NetworkParameter このサブコマンドのラベル情報を{@see CommandParameter}として返します
+	 */
+	private function asNetworkParameter() : NetworkParameter{
 		$label = $this->getLabel();
 		$param = new NetworkParameter();
 		$param->paramName = $label;
@@ -77,10 +99,10 @@ abstract class SubCommandBase implements IPermissionTestable{
 	}
 
 	/**
-	 * @return array<NetworkParameter>
+	 * @return array<NetworkParameter> このサブコマンド以降の値を{@see CommandParameter}として返します
 	 */
 	public function getParameters() : array{
-		$params = [$this->asParameter()];
+		$params = [$this->asNetworkParameter()];
 
 		foreach($this->params as $param){
 			$params[] = $param->asNetworkParameter();
