@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace rarkhopper\command_nodes;
 
 use pocketmine\event\EventPriority;
+use pocketmine\event\HandlerListManager;
+use pocketmine\event\RegisteredListener;
 use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\Server;
-use pocketmine\utils\SingletonTrait;
-use rarkhopper\command_nodes\exception\CommandNodesException;
 use rarkhopper\command_nodes\utils\ICmdNodesCommandMap;
 use rarkhopper\command_nodes\utils\ICommandDataUpdater;
 use rarkhopper\command_nodes\utils\ICommandToDataParser;
@@ -21,26 +21,39 @@ use rarkhopper\command_nodes\utils\SimpleCommandToDataParser;
 use ReflectionException;
 
 final class CommandNodes implements PluginOwned{
-	use SingletonTrait; //virionなのでプラグインごとにインスタンスが生成される
+	private ?RegisteredListener $registeredListener = null;
 
-	private ?Plugin $owner = null;
-	private ICmdNodesCommandMap $cmdMap;
-	private ICommandToDataParser $parser;
-	private ICommandDataUpdater $updater;
-
-	public function __construct(){
+	public function __construct(
+		private Plugin $owner,
+		private ICmdNodesCommandMap $cmdMap,
+		private ICommandToDataParser $parser,
+		private ICommandDataUpdater $updater
+	){
 		$this->cmdMap = new SimpleCmdNodesCommandMap();
 		$this->parser = new SimpleCommandToDataParser();
 		$this->updater = new SimpleCommandDataUpdater();
 	}
 
+	public static function create(Plugin $owner) : CommandNodes{
+		return new self(
+			$owner,
+			new SimpleCmdNodesCommandMap(),
+			new SimpleCommandToDataParser(),
+			new SimpleCommandDataUpdater()
+		);
+	}
+
 	/**
-	 * @throws CommandNodesException|ReflectionException
+	 * @throws ReflectionException
 	 */
-	public function registerOwner(Plugin $owner) : void{
-		if($this->isRegistered()) throw new CommandNodesException('already registered owner. given ' . $owner->getName());
-		$this->owner = $owner;
-		Server::getInstance()->getPluginManager()->registerEvent(
+	public function enableCommandPacketOverwrite() : void{
+		$logger = Server::getInstance()->getLogger();
+
+		if($this->registeredListener !== null){
+			$logger->warning('listener is already enabled, but trying enable in ' . $this::class);
+			return;
+		}
+		$this->registeredListener = Server::getInstance()->getPluginManager()->registerEvent(
 		DataPacketSendEvent::class,
 			function(DataPacketSendEvent $ev) : void{
 				foreach($ev->getTargets() as $target){
@@ -60,19 +73,29 @@ final class CommandNodes implements PluginOwned{
 				}
 			},
 			EventPriority::NORMAL,
-			$owner
+			$this->owner
 		);
+		$logger->debug('enabled listener in ' . $this::class);
 	}
 
-	public function isRegistered() : bool{
-		return $this->owner !== null;
+	public function isEnabled() : bool{
+		return $this->registeredListener !== null;
 	}
 
-	/**
-	 * @throws CommandNodesException
-	 */
+	public function disableCommandPacketOverwrite() : void{
+		$server = Server::getInstance();
+		$logger = $server->getLogger();
+
+		if($this->registeredListener === null){
+			$logger->warning('listener is not yet enabled, but trying disable in ' . $this::class);
+			return;
+		}
+		HandlerListManager::global()->unregisterAll($this->registeredListener);
+		$logger->debug('disabled listener in ' . $this::class);
+	}
+
 	public function getOwningPlugin() : Plugin{
-		return $this->owner ?? throw new CommandNodesException('not yet registered owner');
+		return $this->owner;
 	}
 
 	public function getCommandMap() : ICmdNodesCommandMap{
