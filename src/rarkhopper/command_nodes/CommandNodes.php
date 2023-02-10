@@ -62,7 +62,6 @@ final class CommandNodes implements PluginOwned{
 			EventPriority::NORMAL,
 			$owner
 		);
-
 	}
 
 	public function isRegistered() : bool{
