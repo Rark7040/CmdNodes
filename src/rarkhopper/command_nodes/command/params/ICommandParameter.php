@@ -15,5 +15,4 @@ interface ICommandParameter{
 	public function asNetworkParameter() : NetworkParameter;
 	public function isOptional() : bool;
 	public function getFlags() : int;
-	public function validate(string $rawArg) : bool;
 }

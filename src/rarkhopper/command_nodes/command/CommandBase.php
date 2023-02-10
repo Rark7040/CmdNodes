@@ -11,9 +11,6 @@ use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
 use function array_shift;
 use function strtolower;
 
-/**
- * @internal
- */
 abstract class CommandBase extends Command implements ICommandNodesCommand{
 	/** @var array<string, SubCommandBase> */
 	private array $subCmds = [];
@@ -21,10 +18,13 @@ abstract class CommandBase extends Command implements ICommandNodesCommand{
 	abstract public function onRun(CommandSender $sender, array $args) : void;
 
 	/**
-	 * @internal
-	 * @return CommandParameter[][]
+	 * @param SubCommandBase $subCmd このコマンドの1つ目の引数となる文字列を持つサブコマンド
+	 * @return $this
 	 */
-	abstract public function getOverloads(CommandSender $receiver) : array;
+	protected function registerSubCommand(SubCommandBase $subCmd) : CommandBase{
+		$this->subCmds[strtolower($subCmd->getLabel())] = $subCmd;
+		return $this;
+	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args) {
 		if(!$this->testPermission($sender)) return;
@@ -40,5 +40,18 @@ abstract class CommandBase extends Command implements ICommandNodesCommand{
 			throw new InvalidCommandSyntaxException();
 		}
 		$subCmd->onRun($sender, $args);
+	}
+
+	/**
+	 * @internal
+	 * @return CommandParameter[][]
+	 */
+	final public function getOverloads(CommandSender $receiver) : array{
+		$overloads = [];
+		foreach($this->subCmds as $subCmd){
+			if(!$subCmd->testPermission($receiver)) continue;
+			$overloads[] = $subCmd->getParameters();
+		}
+		return $overloads;
 	}
 }
