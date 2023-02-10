@@ -1,4 +1,4 @@
 name: CommandNodes
 version: 1.0.0
-antigen: rarkhopper\cmdnodes
+antigen: rarkhopper\command_nodes
 api: 4.0.0
