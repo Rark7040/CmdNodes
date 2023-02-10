@@ -18,6 +18,9 @@ use function in_array;
 use function strtolower;
 use function ucfirst;
 
+/**
+ * @internal
+ */
 final class SimpleCommandToDataParser implements ICommandToDataParser{
 	public function parse(Command $cmd, Player $receiver) : CommandData{
 		return new CommandData(

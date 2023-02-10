@@ -11,6 +11,9 @@ use pocketmine\Server;
 use rarkhopper\command_nodes\command\CommandBase;
 use function array_values;
 
+/**
+ * @internal
+ */
 final class SimpleCommandDataUpdater implements ICommandDataUpdater{
 	public function update(Player $target) : void{
 		$target->getNetworkSession()->syncAvailableCommands();

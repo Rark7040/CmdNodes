@@ -7,6 +7,9 @@ namespace rarkhopper\command_nodes\utils;
 use pocketmine\Server;
 use rarkhopper\command_nodes\command\CommandBase;
 
+/**
+ * @internal
+ */
 final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 	/** @var array<string, CommandBase> */
 	private array $cmds = [];
