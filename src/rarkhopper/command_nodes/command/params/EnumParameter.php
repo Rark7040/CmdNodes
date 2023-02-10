@@ -22,7 +22,7 @@ abstract class EnumParameter extends CommandParameterBase{
 		);
 	}
 
-	public function getNetworkType() : int{
+	protected function getNetworkType() : int{
 		return AvailableCommandsPacket::ARG_FLAG_ENUM;
 	}
 

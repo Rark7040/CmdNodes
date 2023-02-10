@@ -17,6 +17,8 @@ abstract class CommandParameterBase implements ICommandParameter{
 		private int $flags = 0,
 	){}
 
+	abstract protected function getNetworkType() : int;
+
 	public function isOptional() : bool{
 		return $this->isOptional;
 	}
