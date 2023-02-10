@@ -8,7 +8,7 @@ use pocketmine\command\Command;
 use pocketmine\network\mcpe\protocol\types\command\CommandData;
 use pocketmine\player\Player;
 
-interface ICommandToDataParser{
+interface ICommandToNetworkDataParser{
 	/**
 	 * @internal
 	 * @param Command $cmd      {@see CommandData}を作成するコマンド

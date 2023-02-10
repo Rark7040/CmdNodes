@@ -38,6 +38,10 @@ abstract class CommandParameterBase implements ICommandParameter{
 		return $this->flags;
 	}
 
+	public function getSpan() : int{
+		return 1;
+	}
+
 	public function asNetworkParameter() : NetworkParameter{
 		$param = new NetworkParameter();
 		$param->paramName = $this->getName();

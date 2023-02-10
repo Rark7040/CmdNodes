@@ -19,14 +19,14 @@ final class SimpleNetworkCommandDataUpdater implements INetworkCommandDataUpdate
 		$target->getNetworkSession()->syncAvailableCommands();
 	}
 
-	public function overwrite(AvailableCommandsPacket $pk, ICommandToDataParser $parser, Player $target) : void{
+	public function overwrite(AvailableCommandsPacket $pk, ICommandToNetworkDataParser $parser, Player $target) : void{
 		$pk->commandData = $this->createCommandData($parser, $target);
 	}
 
 	/**
 	 * @return array<CommandData>
 	 */
-	private function createCommandData(ICommandToDataParser $parser, Player $target) : array{
+	private function createCommandData(ICommandToNetworkDataParser $parser, Player $target) : array{
 		$cmdDataPool = [];
 		$logger = Server::getInstance()->getLogger();
 

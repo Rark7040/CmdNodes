@@ -16,4 +16,5 @@ interface ICommandParameter{
 	public function isOptional() : bool;
 	public function getFlags() : int;
 	public function validate(string $rawArg) : bool;
+	public function getSpan() : int;
 }

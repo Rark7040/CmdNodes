@@ -15,10 +15,10 @@ interface INetworkCommandDataUpdater{
 	public function update(Player $target) : void;
 
 	/**
-	 * @internal
 	 * @param AvailableCommandsPacket $pk     {@see AvailableCommandsPacket::$commandData}を上書きを実行するパケット
-	 * @param ICommandToDataParser    $parser {@see CommandData}を作成するのに私用するパーサー
+	 * @param ICommandToNetworkDataParser $parser {@see CommandData}を作成するのに私用するパーサー
 	 * @param Player                  $target $pkが送信されるプレイヤー
+	 *@internal
 	 */
-	public function overwrite(AvailableCommandsPacket $pk, ICommandToDataParser $parser, Player $target) : void;
+	public function overwrite(AvailableCommandsPacket $pk, ICommandToNetworkDataParser $parser, Player $target) : void;
 }

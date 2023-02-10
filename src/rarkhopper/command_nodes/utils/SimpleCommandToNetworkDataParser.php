@@ -21,7 +21,7 @@ use function ucfirst;
 /**
  * @internal
  */
-final class SimpleCommandToDataParser implements ICommandToDataParser{
+final class SimpleCommandToNetworkDataParser implements ICommandToNetworkDataParser{
 	public function parse(Command $cmd, Player $receiver) : CommandData{
 		return new CommandData(
 			strtolower($cmd->getLabel()),
