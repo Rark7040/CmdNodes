@@ -13,7 +13,6 @@ use rarkhopper\command_nodes\command\CommandBase;
 final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 	/** @var array<string, CommandBase> */
 	private array $cmds = [];
-	private bool $hasUpdate = false;
 
 	public function registerAll(string $fallbackPrefix, array $cmds) : void{
 		foreach($cmds as $cmd){
@@ -32,7 +31,6 @@ final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 		$this->cmds[$cmd::class] = $cmd;
 		$logger->debug('registered command. ' . $fallbackPrefix . ':' . $cmd->getLabel());
 		$server->getCommandMap()->register($fallbackPrefix, $cmd);
-		$this->hasUpdate = true;
 		return true;
 	}
 
@@ -49,7 +47,6 @@ final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 		$logger->debug('unregistered /' . $cmd->getLabel() . ' command.');
 		$cmdMap->unregister($cmd);
 		unset($this->cmds[$cmdClass]);
-		$this->hasUpdate = true;
 		return true;
 	}
 
@@ -66,6 +63,5 @@ final class SimpleCmdNodesCommandMap implements ICmdNodesCommandMap{
 			$this->unregister($cmd::class);
 		}
 		$this->cmds = [];
-		$this->hasUpdate = true;
 	}
 }

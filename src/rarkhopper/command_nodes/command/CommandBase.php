@@ -25,7 +25,7 @@ abstract class CommandBase extends Command implements IPermissionTestable{
 	abstract protected function onRun(CommandSender $sender, array $args) : void;
 
 	/**
-	 * @param SubCommandBase $subCmd 1つ目の引数となる文字列を持つサブコマンド
+	 * @param SubCommandBase $subCmd このコマンドの1つ目の引数となる文字列を持つサブコマンド
 	 * @return $this
 	 */
 	protected function registerSubCommand(SubCommandBase $subCmd) : CommandBase{
