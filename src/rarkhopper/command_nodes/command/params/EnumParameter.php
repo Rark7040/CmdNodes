@@ -10,20 +10,12 @@ use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkPa
 use function in_array;
 use function ucfirst;
 
-abstract class EnumParameter extends CommandParameterBase{
-	/**
-	 * @return array<string>
-	 */
-	abstract public function getEnums() : array;
+class EnumParameter extends CommandParameterBase{
 
-	private function getEnumObject() : CommandEnum{
-		return new CommandEnum(
-			ucfirst($this->getName()),
-			$this->getEnums(),
-		);
-	}
+	/** @var array<string> */
+	public array $enums = [];
 
-	protected function getNetworkType() : int{
+	final protected function getNetworkType() : int{
 		return AvailableCommandsPacket::ARG_FLAG_ENUM;
 	}
 
@@ -34,6 +26,13 @@ abstract class EnumParameter extends CommandParameterBase{
 	}
 
 	public function validate(string $rawArg) : bool{
-		return in_array($rawArg, $this->getEnums(), true);
+		return in_array($rawArg, $this->enums, true);
+	}
+
+	private function getEnumObject() : CommandEnum{
+		return new CommandEnum(
+			ucfirst($this->getName()),
+			$this->enums,
+		);
 	}
 }
