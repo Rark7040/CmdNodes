@@ -10,12 +10,11 @@ use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
-use rarkhopper\command_nodes\command\params\ICommandParameter;
 use function explode;
 
-abstract class SubCommandBase implements ICommandNodesCommand{
-	/** @var array<ICommandParameter> */
-	private array $params = [];
+abstract class SubCommandBase implements ICommandNodesCommand, IParameterRegistrable{
+	use ParameterRegistrableTrait;
+
 	private ?string $permission = null;
 
 	/**
@@ -63,29 +62,6 @@ abstract class SubCommandBase implements ICommandNodesCommand{
 	}
 
 	/**
-	 * 引数となる値を位置を指定して追加します
-	 *
-	 * @param ICommandParameter $param    引数となる値
-	 * @param int               $position 引数の位置 barがこのサブコマンドのラベルで、0にbazを指定した場合/foo bar bazのようなシンタックスになる
-	 * @return $this
-	 */
-	protected function setParameter(ICommandParameter $param, int $position) : SubCommandBase{
-		$this->params[$position] = $param;
-		return $this;
-	}
-
-	/**
-	 * 引数となる値を末尾に追加します
-	 *
-	 * @param ICommandParameter $param 引数となる値
-	 * @return $this
-	 */
-	protected function appendParameter(ICommandParameter $param) : SubCommandBase{
-		$this->params[] = $param;
-		return $this;
-	}
-
-	/**
 	 * @return NetworkParameter このサブコマンドのラベル情報を{@see CommandParameter}として返します
 	 */
 	private function asNetworkParameter() : NetworkParameter{
@@ -101,7 +77,7 @@ abstract class SubCommandBase implements ICommandNodesCommand{
 	/**
 	 * @return array<NetworkParameter> このサブコマンド以降の値を{@see CommandParameter}として返します
 	 */
-	public function getParameters() : array{
+	public function getNetworkParameters() : array{
 		$params = [$this->asNetworkParameter()];
 
 		foreach($this->params as $param){
