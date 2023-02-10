@@ -11,7 +11,6 @@ use function in_array;
 use function ucfirst;
 
 class EnumParameter extends CommandParameterBase{
-
 	/** @var array<string> */
 	public array $enums = [];
 
