@@ -21,7 +21,11 @@ final class SelectorsMap{
 	private array $selectors = [];
 
 	public function __construct(){
-		$this->register(AllPlayersSelector::getIdentifier(), AllEntitiesSelector::class);
+		$this->register(AllEntitiesSelector::getIdentifier(), AllEntitiesSelector::class);
+		$this->register(AllPlayersSelector::getIdentifier(), AllPlayersSelector::class);
+		$this->register(ProximatePlayerSelector::getIdentifier(), ProximatePlayerSelector::class);
+		$this->register(RandomPlayerSelector::getIdentifier(), RandomPlayerSelector::class);
+		$this->register(SelfSelector::getIdentifier(), SelfSelector::class);
 	}
 
 	/**

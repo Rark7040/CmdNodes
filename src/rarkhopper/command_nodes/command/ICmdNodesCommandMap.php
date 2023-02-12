@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\command_nodes\utils;
+namespace rarkhopper\command_nodes\command;
 
 use pocketmine\Server;
-use rarkhopper\command_nodes\command\CommandBase;
 
 interface ICmdNodesCommandMap{
 
