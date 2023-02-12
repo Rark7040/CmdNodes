@@ -15,6 +15,7 @@ interface ICommandParameter{
 	public function asNetworkParameter() : NetworkParameter;
 	public function isOptional() : bool;
 	public function getFlags() : int;
+	//TODO: failed message
 	public function validate(string $rawArg) : bool;
 	public function getSpan() : int;
 }
