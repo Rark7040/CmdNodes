@@ -13,6 +13,8 @@ use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\Server;
 use rarkhopper\command_nodes\command\ICmdNodesCommandMap;
+use rarkhopper\command_nodes\command\selector\IStringToSelectorParser;
+use rarkhopper\command_nodes\command\selector\validator\IStringToValidatorParser;
 use rarkhopper\command_nodes\command\SimpleCmdNodesCommandMap;
 use rarkhopper\command_nodes\utils\ICommandToNetworkDataParser;
 use rarkhopper\command_nodes\utils\INetworkCommandDataUpdater;
@@ -36,7 +38,9 @@ final class CommandNodes implements PluginOwned{
 		private Plugin $owner,
 		?ICmdNodesCommandMap $cmdMap = null,
 		?ICommandToNetworkDataParser $parser = null,
-		?INetworkCommandDataUpdater $updater = null
+		?INetworkCommandDataUpdater $updater = null,
+		?IStringToSelectorParser $selectorParser = null,
+		?IStringToValidatorParser $validatorParser = null
 	){
 		$this->cmdMap = $cmdMap ?? new SimpleCmdNodesCommandMap();
 		$this->parser = $parser ?? new SimpleCommandToNetworkDataParser();
