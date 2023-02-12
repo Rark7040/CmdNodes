@@ -12,7 +12,7 @@ final class AllPlayersSelector extends BaseSelector{
 		return 'a';
 	}
 
-	public function select(?CommandSender $executor) : array{
+	public function selectEntities(?CommandSender $executor) : array{
 		return Server::getInstance()->getOnlinePlayers();
 	}
 }

@@ -13,7 +13,7 @@ final class ProximatePlayerSelector extends BaseSelector{
 		return 'p';
 	}
 
-	public function select(?CommandSender $executor) : array{
+	public function selectEntities(?CommandSender $executor) : array{
 		if(!$executor instanceof Player) return [];
 		$targetDistance = PHP_INT_MAX;
 		$target = null;

@@ -24,5 +24,5 @@ interface ISelector{
 	/**
 	 * @return array<Entity>
 	 */
-	public function select(?CommandSender $executor) : array;
+	public function selectEntities(?CommandSender $executor) : array;
 }

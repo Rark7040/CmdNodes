@@ -13,7 +13,7 @@ final class AllEntitiesSelector extends BaseSelector{
 		return 'e';
 	}
 
-	public function select(?CommandSender $executor) : array{
+	public function selectEntities(?CommandSender $executor) : array{
 		$entities = [];
 
 		foreach(Server::getInstance()->getWorldManager()->getWorlds() as $world){

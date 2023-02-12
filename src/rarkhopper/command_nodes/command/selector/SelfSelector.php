@@ -12,7 +12,7 @@ final class SelfSelector extends BaseSelector{
 		return 's';
 	}
 
-	public function select(?CommandSender $executor) : array{
+	public function selectEntities(?CommandSender $executor) : array{
 		return $executor instanceof Player? [$executor]: [];
 	}
 }

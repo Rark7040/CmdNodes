@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\command\selector;
 
+use pocketmine\Server;
 use rarkhopper\command_nodes\exception\SelectorException;
 use function explode;
 use function preg_match;
@@ -28,8 +29,15 @@ final class SimpleStringToSelectorParser implements IStringToSelectorParser{
 			->register(SelfSelector::getIdentifier(), SelfSelector::class);
 	}
 
-	public function register(string $prefix, string $selectorClass) : self{
-		$this->selectors[self::SELECTOR_PREFIX . $prefix] = $selectorClass;
+	public function register(string $id, string $selectorClass, bool $override = false) : IStringToSelectorParser{
+		$logger = Server::getInstance()->getLogger();
+		$prefixedId = self::SELECTOR_PREFIX . $id;
+
+		if(isset($this->selectors[$prefixedId])){
+			if($override) throw new SelectorException('cannot override already registered selector. but given ' . $prefixedId . ':' . $selectorClass);
+			$logger->debug('selector ' . $prefixedId . ' was overriding to ' . $selectorClass);
+		}
+		$this->selectors[$prefixedId] = $selectorClass;
 		return $this;
 	}
 

@@ -15,7 +15,7 @@ final class RandomPlayerSelector extends BaseSelector{
 		return 'r';
 	}
 
-	public function select(?CommandSender $executor) : array{
+	public function selectEntities(?CommandSender $executor) : array{
 		$players = array_values(Server::getInstance()->getOnlinePlayers());
 		$playersCnt = count($players);
 
