@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\command\selector\filter;
 
-use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
+use pocketmine\player\Player;
 use rarkhopper\command_nodes\exception\InvalidExecutorException;
 use rarkhopper\command_nodes\exception\InvalidValidatorOperandException;
 
@@ -37,5 +37,5 @@ interface IFilter{
 	 * @return array<Entity>
 	 * @throws InvalidExecutorException
 	 */
-	public function filter(CommandSender $executor, array $entities) : array;
+	public function filter(Player $executor, array $entities) : array;
 }

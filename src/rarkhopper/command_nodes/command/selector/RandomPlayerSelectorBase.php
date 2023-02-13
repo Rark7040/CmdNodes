@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\command\selector;
 
-use pocketmine\command\CommandSender;
+use pocketmine\player\Player;
 use pocketmine\Server;
 use function array_values;
 use function count;
@@ -15,7 +15,7 @@ final class RandomPlayerSelectorBase extends SelectorBase{
 		return 'r';
 	}
 
-	public function selectEntities(?CommandSender $executor) : array{
+	public function selectEntities(Player $executor) : array{
 		$players = array_values(Server::getInstance()->getOnlinePlayers());
 		$playersCnt = count($players);
 

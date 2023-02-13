@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\command\selector\filter;
 
-use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use rarkhopper\command_nodes\exception\InvalidExecutorException;
 use rarkhopper\command_nodes\exception\InvalidValidatorOperandException;
 use function filter_var;
 use const FILTER_VALIDATE_FLOAT;
 
-final class MinRadiusFilter  extends FilterBase{
+final class MinRadiusFilter extends FilterBase{
 	private float $minRadius;
 
 	public function __construct(string $usedType, string $strOperand){
@@ -33,10 +31,8 @@ final class MinRadiusFilter  extends FilterBase{
 		return $this->minRadius;
 	}
 
-	public function filter(CommandSender $executor, array $entities) : array{
+	public function filter(Player $executor, array $entities) : array{
 		$filteredEntities = [];
-
-		if(!$executor instanceof Player) throw new InvalidExecutorException($executor, Player::class);
 		$pos = $executor->getPosition();
 
 		foreach($entities as  $entity){

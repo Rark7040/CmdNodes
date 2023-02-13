@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\command\selector\filter;
 
+use pocketmine\entity\Entity;
+use pocketmine\math\Vector3;
 use rarkhopper\command_nodes\exception\InvalidValidatorOperandException;
+use function array_multisort;
+use const SORT_DESC;
+use const SORT_NUMERIC;
 
 abstract class FilterBase implements IFilter{
 	/**
@@ -18,5 +23,19 @@ abstract class FilterBase implements IFilter{
 
 	final function getRawOperand() : string{
 		return $this->strOperand;
+	}
+
+	/**
+	 * @param array<Entity> $entities
+	 * @return array<int, Entity>
+	 */
+	final protected function orderByDistance(Vector3 $vec3, array $entities) : array{
+		$orderedEntities = [];
+
+		foreach($entities as $entity){
+			$orderedEntities[$entity->getPosition()->distance($vec3)] = $entity;
+		}
+		array_multisort($orderedEntities, SORT_NUMERIC, SORT_DESC);
+		return $orderedEntities;
 	}
 }

@@ -28,7 +28,7 @@ abstract class SelectorBase implements ISelector{
 	 * @return array<Entity>
 	 */
 	final protected function filterEntities(array $entities) : array{
-
+		//TODO: filter
 		return [];
 	}
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\command\selector;
 
-use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 
 final class SelfSelectorBase extends SelectorBase{
@@ -12,7 +11,7 @@ final class SelfSelectorBase extends SelectorBase{
 		return 's';
 	}
 
-	public function selectEntities(?CommandSender $executor) : array{
-		return $executor instanceof Player? [$executor]: [];
+	public function selectEntities(Player $executor) : array{
+		return [$executor];
 	}
 }

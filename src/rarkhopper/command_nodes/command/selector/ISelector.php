@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\command\selector;
 
-use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
+use pocketmine\player\Player;
 use rarkhopper\command_nodes\command\selector\filter\IFilter;
 
 interface ISelector{
@@ -24,5 +24,5 @@ interface ISelector{
 	/**
 	 * @return array<Entity>
 	 */
-	public function selectEntities(?CommandSender $executor) : array;
+	public function selectEntities(Player $executor) : array;
 }

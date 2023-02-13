@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\command\selector;
 
-use pocketmine\command\CommandSender;
+use pocketmine\player\Player;
 use pocketmine\Server;
 
 final class AllPlayersSelectorBase extends SelectorBase{
@@ -12,7 +12,7 @@ final class AllPlayersSelectorBase extends SelectorBase{
 		return 'a';
 	}
 
-	public function selectEntities(?CommandSender $executor) : array{
+	public function selectEntities(Player $executor) : array{
 		return Server::getInstance()->getOnlinePlayers();
 	}
 }

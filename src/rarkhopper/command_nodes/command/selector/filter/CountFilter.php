@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\command\selector\filter;
 
-use pocketmine\command\CommandSender;
+use pocketmine\player\Player;
 use rarkhopper\command_nodes\exception\InvalidValidatorOperandException;
 use function array_slice;
 use function count;
@@ -34,7 +34,7 @@ final class CountFilter extends FilterBase{
 		return $this->maxCnt;
 	}
 
-	public function filter(CommandSender $executor, array $entities) : array{
+	public function filter(Player $executor, array $entities) : array{
 		if(count($entities) <= $this->maxCnt) return $entities;
 		return array_slice($entities, 0, $this->maxCnt);
 	}
