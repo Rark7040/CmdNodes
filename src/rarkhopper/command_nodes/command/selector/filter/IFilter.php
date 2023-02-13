@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\command_nodes\command\selector\validator;
+namespace rarkhopper\command_nodes\command\selector\filter;
 
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
 use rarkhopper\command_nodes\exception\InvalidExecutorException;
 use rarkhopper\command_nodes\exception\InvalidValidatorOperandException;
 
-interface IValidator{
+interface IFilter{
 
 	/**
 	 * @throws InvalidValidatorOperandException
@@ -33,5 +33,5 @@ interface IValidator{
 	 * @return array<Entity>
 	 * @throws InvalidExecutorException
 	 */
-	public function validate(CommandSender $executor, array $entities) : array;
+	public function filter(CommandSender $executor, array $entities) : array;
 }

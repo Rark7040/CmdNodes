@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\command_nodes\command\selector\validator;
+namespace rarkhopper\command_nodes\command\selector\filter;
 
 use pocketmine\command\CommandSender;
 use rarkhopper\command_nodes\exception\InvalidValidatorOperandException;
@@ -11,7 +11,7 @@ use function count;
 use function filter_var;
 use const FILTER_VALIDATE_INT;
 
-final class CountValidator implements IValidator{
+final class CountFilter implements IFilter{
 	private int $maxCnt;
 
 	public function __construct(string $strOperand){
@@ -32,7 +32,7 @@ final class CountValidator implements IValidator{
 		return $this->maxCnt;
 	}
 
-	public function validate(CommandSender $executor, array $entities) : array{
+	public function filter(CommandSender $executor, array $entities) : array{
 		if(count($entities) <= $this->maxCnt) return $entities;
 		return array_slice($entities, 0, $this->maxCnt);
 	}

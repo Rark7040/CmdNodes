@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\command_nodes\command\selector\validator;
+namespace rarkhopper\command_nodes\command\selector\filter;
 
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
@@ -11,7 +11,7 @@ use rarkhopper\command_nodes\exception\InvalidValidatorOperandException;
 use function filter_var;
 use const FILTER_VALIDATE_FLOAT;
 
-final class RadiusValidator implements IValidator{
+final class RadiusFilter implements IFilter{
 	private float $radius;
 
 	public function __construct(string $strOperand){
@@ -31,7 +31,7 @@ final class RadiusValidator implements IValidator{
 		return $this->radius;
 	}
 
-	public function validate(CommandSender $executor, array $entities) : array{
+	public function filter(CommandSender $executor, array $entities) : array{
 		$filteredEntities = [];
 
 		if(!$executor instanceof Player) throw new InvalidExecutorException($executor, Player::class);

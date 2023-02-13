@@ -6,20 +6,20 @@ namespace rarkhopper\command_nodes\command\selector;
 
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
-use rarkhopper\command_nodes\command\selector\validator\IValidator;
+use rarkhopper\command_nodes\command\selector\filter\IFilter;
 
 interface ISelector{
 	/**
-	 * @param array<IValidator> $validators
+	 * @param array<IFilter> $validators
 	 */
 	public function __construct(array $validators);
 
 	public static function getIdentifier() : string;
 
 	/**
-	 * @return IValidator[]
+	 * @return IFilter[]
 	 */
-	public function getValidators() : array;
+	public function getFilters() : array;
 
 	/**
 	 * @return array<Entity>

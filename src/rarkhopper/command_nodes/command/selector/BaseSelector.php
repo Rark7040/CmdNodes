@@ -4,21 +4,31 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\command\selector;
 
-use rarkhopper\command_nodes\command\selector\validator\IValidator;
+use pocketmine\entity\Entity;
+use rarkhopper\command_nodes\command\selector\filter\IFilter;
 
 /**
  * @internal
  */
 abstract class BaseSelector implements ISelector{
 	/**
-	 * @param array<IValidator> $validators
+	 * @param array<IFilter> $filters
 	 */
-	final public function __construct(private array $validators){}
+	final public function __construct(private array $filters){}
 
 	/**
-	 * @return IValidator[]
+	 * @return IFilter[]
 	 */
-	public function getValidators() : array{
-		return $this->validators;
+	public function getFilters() : array{
+		return $this->filters;
+	}
+
+	/**
+	 * @param array<Entity> $entities
+	 * @return array<Entity>
+	 */
+	final protected function filterEntities(array $entities) : array{
+
+		return [];
 	}
 }
