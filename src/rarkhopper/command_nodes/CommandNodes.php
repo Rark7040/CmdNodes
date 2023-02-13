@@ -31,10 +31,11 @@ final class CommandNodes implements PluginOwned{
 	private IStringToSelectorParser $selectorParser;
 
 	/**
-	 * @param Plugin                           $owner   呼び出し元のプラグイン
-	 * @param ICmdNodesCommandMap|null         $cmdMap  nullが指定された場合、{@see SimpleCmdNodesCommandMap}が代入されます
-	 * @param ICommandToNetworkDataParser|null $parser  nullが指定された場合、{@see SimpleCommandToNetworkDataParser}が代入されます
-	 * @param INetworkCommandDataUpdater|null  $updater nullが指定された場合、{@see SimpleNetworkCommandDataUpdater}が代入されます
+	 * @param Plugin                           $owner          呼び出し元のプラグイン
+	 * @param ICmdNodesCommandMap|null         $cmdMap         nullが指定された場合、{@see SimpleCmdNodesCommandMap}が代入されます
+	 * @param ICommandToNetworkDataParser|null $parser         nullが指定された場合、{@see SimpleCommandToNetworkDataParser}が代入されます
+	 * @param INetworkCommandDataUpdater|null  $updater        nullが指定された場合、{@see SimpleNetworkCommandDataUpdater}が代入されます
+	 * @param IStringToSelectorParser|null     $selectorParser nullが指定された場合、{@see SimpleStringToSelectorParser}が代入されます
 	 */
 	public function __construct(
 		private Plugin $owner,
