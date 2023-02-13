@@ -5,15 +5,19 @@ declare(strict_types=1);
 namespace rarkhopper\command_nodes\command\selector\filter;
 
 use pocketmine\player\Player;
-use rarkhopper\command_nodes\exception\InvalidValidatorOperandException;
+use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
+use RuntimeException;
+use function filter_var;
+use function in_array;
+use const FILTER_VALIDATE_FLOAT;
 
-class VectorFilter extends FilterBase{
+final class VectorFilter extends MultipleOperandsFilter{
 	private float $vec;
 
 	public function __construct(string $usedType, string $strOperand){
 		parent::__construct($usedType, $strOperand);
 
-		if(self::isValidOperand($strOperand)) throw new InvalidValidatorOperandException($strOperand);
+		if(self::isValidOperand($strOperand)) throw new InvalidFilterOperandException($strOperand);
 		$this->vec = (float) $strOperand;
 	}
 
@@ -29,14 +33,12 @@ class VectorFilter extends FilterBase{
 		return $this->vec;
 	}
 
-	public function filter(Player $executor, array $entities) : array{
-		$filteredEntities = [];
-		$pos = $executor->getPosition();
+	public function pool(string $key, IOperandsPool $pool) : void{
+		if(!in_array($key, self::getTypes(), true)) throw new RuntimeException(); //TODO
+		parent::pool($key, $pool);
+	}
 
-		foreach($entities as $entity){
-			if($entity->getPosition()->distance($pos) > $this->vec) continue;
-			$filteredEntities[] = $entity;
-		}
-		return $filteredEntities;
+	public function filterOnCompletion(Player $executor, array $entities, IOperandsPool $pool) : array{
+		// TODO: Implement filterOnCompletion() method.
 	}
 }

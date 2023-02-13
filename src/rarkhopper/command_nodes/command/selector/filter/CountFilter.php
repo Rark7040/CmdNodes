@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace rarkhopper\command_nodes\command\selector\filter;
 
 use pocketmine\player\Player;
-use rarkhopper\command_nodes\exception\InvalidValidatorOperandException;
+use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
 use function array_slice;
 use function count;
 use function filter_var;
@@ -17,7 +17,7 @@ final class CountFilter extends FilterBase{
 	public function __construct(string $usedType, string $strOperand){
 		parent::__construct($usedType, $strOperand);
 
-		if(self::isValidOperand($strOperand)) throw new InvalidValidatorOperandException($strOperand);
+		if(self::isValidOperand($strOperand)) throw new InvalidFilterOperandException($strOperand);
 		$this->maxCnt = (int) $strOperand;
 	}
 

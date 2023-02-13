@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace rarkhopper\command_nodes\command\selector\filter;
 
 use pocketmine\player\Player;
-use rarkhopper\command_nodes\exception\InvalidValidatorOperandException;
+use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
 use function filter_var;
 use const FILTER_VALIDATE_FLOAT;
 
@@ -15,7 +15,7 @@ final class RadiusFilter extends FilterBase{
 	public function __construct(string $usedType, string $strOperand){
 		parent::__construct($usedType, $strOperand);
 
-		if(self::isValidOperand($strOperand)) throw new InvalidValidatorOperandException($strOperand);
+		if(self::isValidOperand($strOperand)) throw new InvalidFilterOperandException($strOperand);
 		$this->radius = (float) $strOperand;
 	}
 

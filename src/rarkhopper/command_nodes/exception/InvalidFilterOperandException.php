@@ -6,7 +6,7 @@ namespace rarkhopper\command_nodes\exception;
 
 use Throwable;
 
-class InvalidValidatorOperandException extends CommandNodesException{
+class InvalidFilterOperandException extends CommandNodesException{
 	public function __construct(
 		private string $invalidOperand,
 		int $code = 0,

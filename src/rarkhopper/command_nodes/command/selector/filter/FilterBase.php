@@ -6,14 +6,14 @@ namespace rarkhopper\command_nodes\command\selector\filter;
 
 use pocketmine\entity\Entity;
 use pocketmine\math\Vector3;
-use rarkhopper\command_nodes\exception\InvalidValidatorOperandException;
+use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
 use function array_multisort;
 use const SORT_DESC;
 use const SORT_NUMERIC;
 
 abstract class FilterBase implements IFilter{
 	/**
-	 * @throws InvalidValidatorOperandException
+	 * @throws InvalidFilterOperandException
 	 */
 	public function __construct(private string $usedType, private string $strOperand){}
 

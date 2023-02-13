@@ -7,12 +7,12 @@ namespace rarkhopper\command_nodes\command\selector\filter;
 use pocketmine\entity\Entity;
 use pocketmine\player\Player;
 use rarkhopper\command_nodes\exception\InvalidExecutorException;
-use rarkhopper\command_nodes\exception\InvalidValidatorOperandException;
+use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
 
 interface IFilter{
 
 	/**
-	 * @throws InvalidValidatorOperandException
+	 * @throws InvalidFilterOperandException
 	 */
 	public function __construct(string $usedType, string $strOperand);
 
