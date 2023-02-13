@@ -36,6 +36,6 @@ final class CountFilter extends FilterBase{
 
 	public function filter(Player $executor, array $entities) : array{
 		if(count($entities) <= $this->maxCnt) return $entities;
-		return array_slice($entities, 0, $this->maxCnt);
+		return array_slice($this->orderByDistance($executor->getPosition(), $entities), 0, $this->maxCnt);
 	}
 }

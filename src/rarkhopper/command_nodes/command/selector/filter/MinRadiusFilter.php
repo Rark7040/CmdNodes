@@ -33,10 +33,9 @@ final class MinRadiusFilter extends FilterBase{
 
 	public function filter(Player $executor, array $entities) : array{
 		$filteredEntities = [];
-		$pos = $executor->getPosition();
 
-		foreach($entities as  $entity){
-			if($entity->getPosition()->distance($pos) < $this->minRadius) continue;
+		foreach($this->orderByDistance($executor->getPosition(), $entities) as $distance => $entity){
+			if($distance < $this->minRadius) continue;
 			$filteredEntities[] = $entity;
 		}
 		return $filteredEntities;

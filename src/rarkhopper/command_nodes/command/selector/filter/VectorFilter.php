@@ -6,21 +6,19 @@ namespace rarkhopper\command_nodes\command\selector\filter;
 
 use pocketmine\player\Player;
 use rarkhopper\command_nodes\exception\InvalidValidatorOperandException;
-use function filter_var;
-use const FILTER_VALIDATE_FLOAT;
 
-final class RadiusFilter extends FilterBase{
-	private float $radius;
+class VectorFilter extends FilterBase{
+	private float $vec;
 
 	public function __construct(string $usedType, string $strOperand){
 		parent::__construct($usedType, $strOperand);
 
 		if(self::isValidOperand($strOperand)) throw new InvalidValidatorOperandException($strOperand);
-		$this->radius = (float) $strOperand;
+		$this->vec = (float) $strOperand;
 	}
 
 	public static function getTypes() : array{
-		return ['r'];
+		return ['x', 'y', 'z', 'dx', 'dy', 'dz'];
 	}
 
 	public static function isValidOperand(string $strOperand) : bool{
@@ -28,14 +26,15 @@ final class RadiusFilter extends FilterBase{
 	}
 
 	public function getOperand() : float{
-		return $this->radius;
+		return $this->vec;
 	}
 
 	public function filter(Player $executor, array $entities) : array{
 		$filteredEntities = [];
+		$pos = $executor->getPosition();
 
-		foreach($this->orderByDistance($executor->getPosition(), $entities) as $distance => $entity){
-			if($distance > $this->radius) continue;
+		foreach($entities as $entity){
+			if($entity->getPosition()->distance($pos) > $this->vec) continue;
 			$filteredEntities[] = $entity;
 		}
 		return $filteredEntities;
