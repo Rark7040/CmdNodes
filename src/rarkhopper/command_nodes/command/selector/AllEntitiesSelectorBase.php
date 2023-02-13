@@ -8,7 +8,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\Server;
 use function array_merge;
 
-final class AllEntitiesSelector extends BaseSelector{
+final class AllEntitiesSelectorBase extends SelectorBase{
 	public static function getIdentifier() : string{
 		return 'e';
 	}

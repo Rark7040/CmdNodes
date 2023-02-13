@@ -11,10 +11,12 @@ use function count;
 use function filter_var;
 use const FILTER_VALIDATE_INT;
 
-final class CountFilter implements IFilter{
+final class CountFilter extends FilterBase{
 	private int $maxCnt;
 
-	public function __construct(string $strOperand){
+	public function __construct(string $usedType, string $strOperand){
+		parent::__construct($usedType, $strOperand);
+
 		if(self::isValidOperand($strOperand)) throw new InvalidValidatorOperandException($strOperand);
 		$this->maxCnt = (int) $strOperand;
 	}

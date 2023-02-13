@@ -7,7 +7,7 @@ namespace rarkhopper\command_nodes\command\selector;
 use pocketmine\command\CommandSender;
 use pocketmine\Server;
 
-final class AllPlayersSelector extends BaseSelector{
+final class AllPlayersSelectorBase extends SelectorBase{
 	public static function getIdentifier() : string{
 		return 'a';
 	}

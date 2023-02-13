@@ -14,7 +14,7 @@ interface IFilter{
 	/**
 	 * @throws InvalidValidatorOperandException
 	 */
-	public function __construct(string $strOperand);
+	public function __construct(string $usedType, string $strOperand);
 
 	/**
 	 * @return array<string>
@@ -22,6 +22,10 @@ interface IFilter{
 	public static function getTypes() : array;
 
 	public static function isValidOperand(string $strOperand) : bool;
+
+	public function getUsedType() : string;
+
+	public function getRawOperand() : string;
 
 	/**
 	 * @return scalar

@@ -7,7 +7,7 @@ namespace rarkhopper\command_nodes\command\selector;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 
-final class SelfSelector extends BaseSelector{
+final class SelfSelectorBase extends SelectorBase{
 	public static function getIdentifier() : string{
 		return 's';
 	}

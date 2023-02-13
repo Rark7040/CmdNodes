@@ -8,11 +8,15 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use rarkhopper\command_nodes\exception\InvalidExecutorException;
 use rarkhopper\command_nodes\exception\InvalidValidatorOperandException;
+use function filter_var;
+use const FILTER_VALIDATE_FLOAT;
 
-class MinRadiusFilter implements IFilter{
+final class MinRadiusFilter  extends FilterBase{
 	private float $minRadius;
 
-	public function __construct(string $strOperand){
+	public function __construct(string $usedType, string $strOperand){
+		parent::__construct($usedType, $strOperand);
+
 		if(self::isValidOperand($strOperand)) throw new InvalidValidatorOperandException($strOperand);
 		$this->minRadius = (float) $strOperand;
 	}

@@ -8,7 +8,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use const PHP_INT_MAX;
 
-final class ProximatePlayerSelector extends BaseSelector{
+final class ProximatePlayerSelectorBase extends SelectorBase{
 	public static function getIdentifier() : string{
 		return 'p';
 	}

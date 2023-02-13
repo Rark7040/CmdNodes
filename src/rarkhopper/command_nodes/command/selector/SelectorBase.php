@@ -10,7 +10,7 @@ use rarkhopper\command_nodes\command\selector\filter\IFilter;
 /**
  * @internal
  */
-abstract class BaseSelector implements ISelector{
+abstract class SelectorBase implements ISelector{
 	/**
 	 * @param array<IFilter> $filters
 	 */
