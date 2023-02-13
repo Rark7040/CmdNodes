@@ -14,7 +14,8 @@ use pocketmine\plugin\PluginOwned;
 use pocketmine\Server;
 use rarkhopper\command_nodes\command\ICmdNodesCommandMap;
 use rarkhopper\command_nodes\command\selector\IStringToSelectorParser;
-use rarkhopper\command_nodes\command\selector\validator\IStringToValidatorParser;
+use rarkhopper\command_nodes\command\selector\SimpleStringToSelectorParser;
+use rarkhopper\command_nodes\command\selector\validator\SimpleStringToValidatorParser;
 use rarkhopper\command_nodes\command\SimpleCmdNodesCommandMap;
 use rarkhopper\command_nodes\utils\ICommandToNetworkDataParser;
 use rarkhopper\command_nodes\utils\INetworkCommandDataUpdater;
@@ -27,6 +28,7 @@ final class CommandNodes implements PluginOwned{
 	private ICmdNodesCommandMap $cmdMap;
 	private ICommandToNetworkDataParser $parser;
 	private INetworkCommandDataUpdater $updater;
+	private IStringToSelectorParser $selectorParser;
 
 	/**
 	 * @param Plugin                           $owner   呼び出し元のプラグイン
@@ -39,12 +41,14 @@ final class CommandNodes implements PluginOwned{
 		?ICmdNodesCommandMap $cmdMap = null,
 		?ICommandToNetworkDataParser $parser = null,
 		?INetworkCommandDataUpdater $updater = null,
-		?IStringToSelectorParser $selectorParser = null,
-		?IStringToValidatorParser $validatorParser = null
+		?IStringToSelectorParser $selectorParser = null
 	){
 		$this->cmdMap = $cmdMap ?? new SimpleCmdNodesCommandMap();
 		$this->parser = $parser ?? new SimpleCommandToNetworkDataParser();
 		$this->updater = $updater ?? new SimpleNetworkCommandDataUpdater();
+		$this->selectorParser = $selectorParser ?? new SimpleStringToSelectorParser(
+			new SimpleStringToValidatorParser()
+		);
 	}
 
 	/**
@@ -119,5 +123,9 @@ final class CommandNodes implements PluginOwned{
 
 	public function getUpdater() : INetworkCommandDataUpdater{
 		return $this->updater;
+	}
+
+	public function getSelectorParser() : IStringToSelectorParser{
+		return $this->selectorParser;
 	}
 }

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace rarkhopper\command_nodes\command\selector;
 
 use pocketmine\Server;
+use rarkhopper\command_nodes\command\selector\validator\IStringToValidatorParser;
+use rarkhopper\command_nodes\command\selector\validator\IValidator;
 use rarkhopper\command_nodes\exception\SelectorException;
 use function explode;
 use function preg_match;
+use function str_contains;
 use function trim;
 
-/**
- * @internal
- */
 final class SimpleStringToSelectorParser implements IStringToSelectorParser{
 	private const SELECTOR_PREFIX = '@';
 	private const REGEX_SELECTOR_ID = '/^@[^(\[\])]*/';
@@ -21,7 +21,11 @@ final class SimpleStringToSelectorParser implements IStringToSelectorParser{
 	/** @var array<string, class-string<ISelector>> */
 	private array $selectors = [];
 
-	public function __construct(){
+	public function __construct(private IStringToValidatorParser $validatorParser){
+		$this->setDefaults();
+	}
+
+	private function setDefaults() : void{
 		$this->register(AllEntitiesSelector::getIdentifier(), AllEntitiesSelector::class)
 			->register(AllPlayersSelector::getIdentifier(), AllPlayersSelector::class)
 			->register(ProximatePlayerSelector::getIdentifier(), ProximatePlayerSelector::class)
@@ -34,7 +38,7 @@ final class SimpleStringToSelectorParser implements IStringToSelectorParser{
 		$prefixedId = self::SELECTOR_PREFIX . $id;
 
 		if(isset($this->selectors[$prefixedId])){
-			if($override) throw new SelectorException('cannot override already registered selector. but given ' . $prefixedId . ':' . $selectorClass);
+			if(!$override) throw new SelectorException('cannot override already registered selector. but given ' . $prefixedId . ':' . $selectorClass);
 			$logger->debug('selector ' . $prefixedId . ' was overriding to ' . $selectorClass);
 		}
 		$this->selectors[$prefixedId] = $selectorClass;
@@ -48,7 +52,10 @@ final class SimpleStringToSelectorParser implements IStringToSelectorParser{
 		$selectorClass = $this->selectors[$selectorId] ?? null;
 
 		if($selectorClass === null) return null;
-		return new $selectorClass(); //TODO: parse args
+		$validators = $this->getValidators($arg);
+
+		if($validators === null) return null;
+		return new $selectorClass($validators); //TODO: parse args
 	}
 
 	private function getIdentifierByArgument(string $arg) : ?string{
@@ -56,6 +63,23 @@ final class SimpleStringToSelectorParser implements IStringToSelectorParser{
 			throw new SelectorException('invalid regular expression ' . self::REGEX_SELECTOR_ID);
 		}
 		return $matches[0] ?? null;
+	}
+
+	/**
+	 * @return array<IValidator>|null
+	 */
+	private function getValidators(string $arg) : ?array{
+		$validators = [];
+		$stringValidators = $this->getStringValidators($arg);
+
+		if($stringValidators === null) return null;
+		foreach($stringValidators as $stringValidator){
+			$validator = $this->validatorParser->getValidator($stringValidator);
+
+			if($validator === null) return null;
+			$validators[] = $validator;
+		}
+		return $validators;
 	}
 
 	/**
@@ -67,7 +91,9 @@ final class SimpleStringToSelectorParser implements IStringToSelectorParser{
 		}
 		$match = $matches[0] ?? null;
 
-		if($match === null) return null;
+		if($match === null){
+			return str_contains($arg, '[')? null: [];
+		}
 		return explode(',', trim($match, '[]'));
 	}
 }

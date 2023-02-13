@@ -7,16 +7,21 @@ namespace rarkhopper\command_nodes\command\selector\validator;
 use pocketmine\entity\Entity;
 
 interface IValidator{
+	public function __construct(string $strOperand);
 
 	/**
-	 * @param scalar $arg
+	 * @return array<string>
 	 */
-	public function __construct(mixed $arg);
-	public function getType() : string;
+	public static function getTypes() : array;
 
 	/**
 	 * @return scalar
 	 */
-	public function getArguments() : mixed;
-	public function validate(Entity $entity) : bool;
+	public function getOperand() : mixed;
+
+	/**
+	 * @param array<Entity> $entities
+	 * @return array<Entity>
+	 */
+	public function validate(array $entities) : array;
 }

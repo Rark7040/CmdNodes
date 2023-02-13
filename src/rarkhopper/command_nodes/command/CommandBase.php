@@ -15,6 +15,7 @@ abstract class CommandBase extends Command implements ICommandNodesCommand{
 	/** @var array<string, SubCommandBase> */
 	private array $subCmds = [];
 
+	//TODO: support double quart args  "test man"
 	abstract public function onRun(CommandSender $sender, array $args) : void;
 
 	/**
