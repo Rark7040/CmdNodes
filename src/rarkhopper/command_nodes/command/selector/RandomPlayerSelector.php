@@ -10,7 +10,7 @@ use function array_values;
 use function count;
 use function mt_rand;
 
-final class RandomPlayerSelectorBase extends SelectorBase{
+final class RandomPlayerSelector extends SelectorBase{
 	public static function getIdentifier() : string{
 		return 'r';
 	}

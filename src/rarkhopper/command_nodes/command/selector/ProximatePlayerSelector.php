@@ -7,7 +7,7 @@ namespace rarkhopper\command_nodes\command\selector;
 use pocketmine\player\Player;
 use const PHP_INT_MAX;
 
-final class ProximatePlayerSelectorBase extends SelectorBase{
+final class ProximatePlayerSelector extends SelectorBase{
 	public static function getIdentifier() : string{
 		return 'p';
 	}

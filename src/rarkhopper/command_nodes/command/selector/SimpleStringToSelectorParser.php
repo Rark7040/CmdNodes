@@ -26,11 +26,11 @@ final class SimpleStringToSelectorParser implements IStringToSelectorParser{
 	}
 
 	private function setDefaults() : void{
-		$this->register(AllEntitiesSelectorBase::getIdentifier(), AllEntitiesSelectorBase::class)
-			->register(AllPlayersSelectorBase::getIdentifier(), AllPlayersSelectorBase::class)
-			->register(ProximatePlayerSelectorBase::getIdentifier(), ProximatePlayerSelectorBase::class)
-			->register(RandomPlayerSelectorBase::getIdentifier(), RandomPlayerSelectorBase::class)
-			->register(SelfSelectorBase::getIdentifier(), SelfSelectorBase::class);
+		$this->register(AllEntitiesSelector::getIdentifier(), AllEntitiesSelector::class)
+			->register(AllPlayersSelector::getIdentifier(), AllPlayersSelector::class)
+			->register(ProximatePlayerSelector::getIdentifier(), ProximatePlayerSelector::class)
+			->register(RandomPlayerSelector::getIdentifier(), RandomPlayerSelector::class)
+			->register(SelfSelector::getIdentifier(), SelfSelector::class);
 	}
 
 	public function register(string $id, string $selectorClass, bool $override = false) : IStringToSelectorParser{
