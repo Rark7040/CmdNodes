@@ -6,6 +6,7 @@ namespace rarkhopper\command_nodes\command\selector\filter;
 
 use pocketmine\entity\Entity;
 use pocketmine\player\Player;
+use rarkhopper\command_nodes\command\selector\IOperandsPool;
 use rarkhopper\command_nodes\exception\InvalidExecutorException;
 use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
 
@@ -13,7 +14,7 @@ interface IMultipleOperandsFilter{
 	/**
 	 * @throws InvalidFilterOperandException
 	 */
-	public function pool(string $key, IOperandsPool $pool) : void;
+	public function pool(IOperandsPool $pool) : void;
 
 	/**
 	 * @param array<Entity> $entities

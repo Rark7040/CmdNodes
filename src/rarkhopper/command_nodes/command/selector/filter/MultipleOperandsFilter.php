@@ -12,8 +12,4 @@ abstract class MultipleOperandsFilter extends FilterBase implements IMultipleOpe
 		//NOOP
 		return $entities;
 	}
-
-	public function pool(string $key, IOperandsPool $pool) : void{
-		$pool->pool($key, $this->getOperand());
-	}
 }

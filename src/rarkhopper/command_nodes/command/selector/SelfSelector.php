@@ -12,6 +12,6 @@ final class SelfSelector extends SelectorBase{
 	}
 
 	public function selectEntities(Player $executor) : array{
-		return [$executor];
+		return $this->filterEntities([$executor]);
 	}
 }

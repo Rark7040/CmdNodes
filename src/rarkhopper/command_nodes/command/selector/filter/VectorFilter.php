@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace rarkhopper\command_nodes\command\selector\filter;
 
 use pocketmine\player\Player;
+use rarkhopper\command_nodes\command\selector\IOperandsPool;
 use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
-use RuntimeException;
 use function filter_var;
-use function in_array;
 use const FILTER_VALIDATE_FLOAT;
 
 final class VectorFilter extends MultipleOperandsFilter{
 	private float $vec;
 
-	public function __construct(string $usedType, string $strOperand){
+	public function __construct(string $usedType, private string $strOperand){
 		parent::__construct($usedType, $strOperand);
 
 		if(self::isValidOperand($strOperand)) throw new InvalidFilterOperandException($strOperand);
@@ -33,9 +32,8 @@ final class VectorFilter extends MultipleOperandsFilter{
 		return $this->vec;
 	}
 
-	public function pool(string $key, IOperandsPool $pool) : void{
-		if(!in_array($key, self::getTypes(), true)) throw new RuntimeException(); //TODO
-		parent::pool($key, $pool);
+	public function pool(IOperandsPool $pool) : void{
+		$pool->pool($this->getUsedType(), $this->strOperand);
 	}
 
 	public function filterOnCompletion(Player $executor, array $entities, IOperandsPool $pool) : array{

@@ -13,6 +13,6 @@ final class AllPlayersSelector extends SelectorBase{
 	}
 
 	public function selectEntities(Player $executor) : array{
-		return Server::getInstance()->getOnlinePlayers();
+		return $this->filterEntities(Server::getInstance()->getOnlinePlayers());
 	}
 }

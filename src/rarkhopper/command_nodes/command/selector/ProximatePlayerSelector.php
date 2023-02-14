@@ -16,7 +16,7 @@ final class ProximatePlayerSelector extends SelectorBase{
 		$targetDistance = PHP_INT_MAX;
 		$target = null;
 
-		foreach($executor->getWorld()->getEntities() as $entity){
+		foreach($this->filterEntities($executor->getWorld()->getEntities()) as $entity){
 			if(!$entity instanceof Player) continue;
 			$distance = $executor->getPosition()->distance($entity->getPosition());
 
