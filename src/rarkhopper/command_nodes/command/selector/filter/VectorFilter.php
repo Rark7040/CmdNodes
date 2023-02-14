@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\command\selector\filter;
 
-use pocketmine\player\Player;
+use pocketmine\math\Vector3;
 use rarkhopper\command_nodes\command\selector\IOperandsPool;
 use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
 use function filter_var;
 use const FILTER_VALIDATE_FLOAT;
 
-final class VectorFilter extends MultipleOperandsFilter{
+final class VectorFilter extends MultipleOperandsFilterBase{
 	private float $vec;
 
 	public function __construct(string $usedType, private string $strOperand){
@@ -36,7 +36,7 @@ final class VectorFilter extends MultipleOperandsFilter{
 		$pool->pool($this->getUsedType(), $this->strOperand);
 	}
 
-	public function filterOnCompletion(Player $executor, array $entities, IOperandsPool $pool) : array{
+	public function filterOnCompletion(Vector3 $vec3, array $entities, IOperandsPool $pool) : array{
 		// TODO: Implement filterOnCompletion() method.
 	}
 }

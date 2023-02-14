@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\command\selector\filter;
 
-use pocketmine\player\Player;
+use pocketmine\math\Vector3;
 use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
 use function array_slice;
 use function count;
@@ -34,8 +34,8 @@ final class CountFilter extends FilterBase{
 		return $this->maxCnt;
 	}
 
-	public function filter(Player $executor, array $entities) : array{
+	public function filter(Vector3 $vec3, array $entities) : array{
 		if(count($entities) <= $this->maxCnt) return $entities;
-		return array_slice($this->orderByDistance($executor->getPosition(), $entities), 0, $this->maxCnt);
+		return array_slice($this->orderByDistance($vec3, $entities), 0, $this->maxCnt);
 	}
 }

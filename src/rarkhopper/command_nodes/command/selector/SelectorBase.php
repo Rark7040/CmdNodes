@@ -36,17 +36,18 @@ abstract class SelectorBase implements ISelector{
 	final protected function filterEntities(array $entities) : array{
 		$pooledFilters = [];
 		$pool = new SimpleOperandsPool();
+		$vec3 = $this->executor->getPosition()->asVector3();
 
 		foreach($this->filters as $filter){
 			if($filter instanceof IMultipleOperandsFilter){
 				$filter->pool($pool);
 				$pooledFilters[$filter::class] = $filter;
 			}
-			$entities = $filter->filter($this->executor, $entities);
+			$entities = $filter->filter($vec3, $entities);
 		}
 
 		foreach($pooledFilters as $pooledFilter){
-			$entities = $pooledFilter->filterOnCompletion($this->executor, $entities, $pool);
+			$entities = $pooledFilter->filterOnCompletion($vec3, $entities, $pool);
 		}
 		return $entities;
 	}

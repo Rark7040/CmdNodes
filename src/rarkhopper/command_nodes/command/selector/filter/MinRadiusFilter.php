@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\command\selector\filter;
 
-use pocketmine\player\Player;
+use pocketmine\math\Vector3;
 use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
 use function filter_var;
 use const FILTER_VALIDATE_FLOAT;
@@ -31,10 +31,10 @@ final class MinRadiusFilter extends FilterBase{
 		return $this->minRadius;
 	}
 
-	public function filter(Player $executor, array $entities) : array{
+	public function filter(Vector3 $vec3, array $entities) : array{
 		$filteredEntities = [];
 
-		foreach($this->orderByDistance($executor->getPosition(), $entities) as $distance => $entity){
+		foreach($this->orderByDistance($vec3, $entities) as $distance => $entity){
 			if($distance < $this->minRadius) continue;
 			$filteredEntities[] = $entity;
 		}
