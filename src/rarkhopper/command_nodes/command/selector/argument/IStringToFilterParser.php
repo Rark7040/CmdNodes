@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\command_nodes\command\selector\filter;
+namespace rarkhopper\command_nodes\command\selector\argument;
 
 interface IStringToFilterParser{
 

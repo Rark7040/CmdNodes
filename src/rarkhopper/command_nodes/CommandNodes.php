@@ -13,7 +13,7 @@ use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\Server;
 use rarkhopper\command_nodes\command\ICmdNodesCommandMap;
-use rarkhopper\command_nodes\command\selector\filter\SimpleStringToFilterParser;
+use rarkhopper\command_nodes\command\selector\argument\SimpleStringToArgumentParser;
 use rarkhopper\command_nodes\command\selector\IStringToSelectorParser;
 use rarkhopper\command_nodes\command\selector\SimpleStringToSelectorParser;
 use rarkhopper\command_nodes\command\SimpleCmdNodesCommandMap;
@@ -48,7 +48,7 @@ final class CommandNodes implements PluginOwned{
 		$this->parser = $parser ?? new SimpleCommandToNetworkDataParser();
 		$this->updater = $updater ?? new SimpleNetworkCommandDataUpdater();
 		$this->selectorParser = $selectorParser ?? new SimpleStringToSelectorParser(
-			new SimpleStringToFilterParser()
+			new SimpleStringToArgumentParser()
 		);
 	}
 

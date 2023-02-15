@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\command_nodes\command\selector\filter;
+namespace rarkhopper\command_nodes\command\selector\argument;
 
 use pocketmine\math\Vector3;
 use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
@@ -11,7 +11,8 @@ use function count;
 use function filter_var;
 use const FILTER_VALIDATE_INT;
 
-final class CountFilter extends FilterBase{
+final class CountFilter extends ArgumentBase implements IFilter{//TODO 負の値もサポート
+	private const TYPE_COUNT = 'c';
 	private int $maxCnt;
 
 	public function __construct(string $usedType, string $strOperand){
@@ -22,7 +23,7 @@ final class CountFilter extends FilterBase{
 	}
 
 	public static function getTypes() : array{
-		return ['c'];
+		return [self::TYPE_COUNT];
 	}
 
 	public static function isValidOperand(string $strOperand) : bool{

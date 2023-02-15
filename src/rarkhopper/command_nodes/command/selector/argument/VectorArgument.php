@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\command_nodes\command\selector\filter;
+namespace rarkhopper\command_nodes\command\selector\argument;
 
 use pocketmine\math\Vector3;
 use rarkhopper\command_nodes\command\selector\IOperandsPool;
@@ -10,7 +10,10 @@ use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
 use function filter_var;
 use const FILTER_VALIDATE_FLOAT;
 
-final class VectorFilter extends MultipleOperandsFilterBase{
+final class VectorArgument extends ArgumentBase implements IVectorArgument{
+	private const TYPE_X = 'x';
+	private const TYPE_Y = 'y';
+	private const TYPE_Z = 'z';
 	private float $vec;
 
 	public function __construct(string $usedType, private string $strOperand){
@@ -21,7 +24,11 @@ final class VectorFilter extends MultipleOperandsFilterBase{
 	}
 
 	public static function getTypes() : array{
-		return ['x', 'y', 'z', 'dx', 'dy', 'dz'];
+		return [
+			self::TYPE_X,
+			self::TYPE_Y,
+			self::TYPE_Z
+		];
 	}
 
 	public static function isValidOperand(string $strOperand) : bool{
@@ -36,7 +43,11 @@ final class VectorFilter extends MultipleOperandsFilterBase{
 		$pool->pool($this->getUsedType(), $this->strOperand);
 	}
 
-	public function filterOnCompletion(Vector3 $vec3, array $entities, IOperandsPool $pool) : array{
-		// TODO: Implement filterOnCompletion() method.
+	public function getVector3(Vector3 $vec3, IOperandsPool $pool) : Vector3{
+		return new Vector3(
+			$pool->getFloat(self::TYPE_X) ?? $vec3->x,
+			$pool->getFloat(self::TYPE_Y) ?? $vec3->y,
+			$pool->getFloat(self::TYPE_Z) ?? $vec3->z
+		);
 	}
 }

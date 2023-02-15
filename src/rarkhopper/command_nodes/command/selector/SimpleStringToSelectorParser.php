@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace rarkhopper\command_nodes\command\selector;
 
 use pocketmine\Server;
-use rarkhopper\command_nodes\command\selector\filter\IFilter;
-use rarkhopper\command_nodes\command\selector\filter\IStringToFilterParser;
+use rarkhopper\command_nodes\command\selector\argument\IFilter;
+use rarkhopper\command_nodes\command\selector\argument\IStringToFilterParser;
 use rarkhopper\command_nodes\exception\SelectorException;
 use function explode;
 use function preg_match;
@@ -16,7 +16,7 @@ use function trim;
 final class SimpleStringToSelectorParser implements IStringToSelectorParser{
 	private const SELECTOR_PREFIX = '@';
 	private const REGEX_SELECTOR_ID = '/^@[^(\[\])]*/';
-	private const REGEX_SELECTOR_FILTERS = '/\[[^[\]]*\]/';
+	private const REGEX_SELECTOR_ARGUMENTS = '/\[[^[\]]*\]/';
 
 	/** @var array<string, class-string<ISelector>> */
 	private array $selectors = [];
@@ -52,7 +52,7 @@ final class SimpleStringToSelectorParser implements IStringToSelectorParser{
 		$selectorClass = $this->selectors[$selectorId] ?? null;
 
 		if($selectorClass === null) return null;
-		$filters = $this->getFilters($arg);
+		$filters = $this->getSelectorArguments($arg);
 
 		if($filters === null) return null;
 		return new $selectorClass($filters);
@@ -68,26 +68,26 @@ final class SimpleStringToSelectorParser implements IStringToSelectorParser{
 	/**
 	 * @return array<IFilter>|null
 	 */
-	private function getFilters(string $arg) : ?array{
-		$validators = [];
-		$strFilters = $this->getStringFilters($arg);
+	private function getSelectorArguments(string $arg) : ?array{
+		$selectorArgs = [];
+		$strSelectorArgs = $this->getStringSelectorArguments($arg);
 
-		if($strFilters === null) return null;
-		foreach($strFilters as $strFilter){
-			$validator = $this->filterParser->getFilter($strFilter);
+		if($strSelectorArgs === null) return null;
+		foreach($strSelectorArgs as $strSelectorArg){
+			$selectorArg = $this->filterParser->getFilter($strSelectorArg);
 
-			if($validator === null) return null;
-			$validators[] = $validator;
+			if($selectorArg === null) return null;
+			$selectorArgs[] = $selectorArg;
 		}
-		return $validators;
+		return $selectorArgs;
 	}
 
 	/**
 	 * @return array<string>|null
 	 */
-	private function getStringFilters(string $arg) : ?array{
-		if(preg_match(self::REGEX_SELECTOR_FILTERS, $arg, $matches) === false){
-			throw new SelectorException('invalid regular expression ' . self::REGEX_SELECTOR_FILTERS);
+	private function getStringSelectorArguments(string $arg) : ?array{
+		if(preg_match(self::REGEX_SELECTOR_ARGUMENTS, $arg, $matches) === false){
+			throw new SelectorException('invalid regular expression ' . self::REGEX_SELECTOR_ARGUMENTS);
 		}
 		$match = $matches[0] ?? null;
 

@@ -6,22 +6,22 @@ namespace rarkhopper\command_nodes\command\selector;
 
 use pocketmine\entity\Entity;
 use pocketmine\player\Player;
-use rarkhopper\command_nodes\command\selector\filter\IFilter;
+use rarkhopper\command_nodes\command\selector\argument\IArgument;
 
 interface ISelector{
 	/**
-	 * @param array<IFilter> $validators
+	 * @param array<IArgument> $args
 	 */
-	public function __construct(Player $executor, array $validators);
+	public function __construct(Player $executor, array $args);
 
 	public static function getIdentifier() : string;
 
 	public function getExecutor() : Player;
 
 	/**
-	 * @return IFilter[]
+	 * @return IArgument[]
 	 */
-	public function getFilters() : array;
+	public function getArguments() : array;
 
 	/**
 	 * @return array<Entity>

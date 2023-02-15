@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\command_nodes\command\selector\filter;
+namespace rarkhopper\command_nodes\command\selector\argument;
 
 use pocketmine\Server;
 use rarkhopper\command_nodes\exception\SelectorException;
@@ -11,7 +11,7 @@ use function explode;
 /**
  * @internal
  */
-final class SimpleStringToFilterParser implements IStringToFilterParser{
+final class SimpleStringToArgumentParser implements IStringToFilterParser{
 	/** @var array<string, class-string<IFilter>> */
 	private array $filters = [];
 

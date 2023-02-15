@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\command_nodes\command\selector\filter;
+namespace rarkhopper\command_nodes\command\selector\argument;
 
 use pocketmine\entity\Entity;
 use pocketmine\math\Vector3;
@@ -11,7 +11,7 @@ use function array_multisort;
 use const SORT_DESC;
 use const SORT_NUMERIC;
 
-abstract class FilterBase implements IFilter{
+abstract class ArgumentBase implements IArgument{
 	/**
 	 * @throws InvalidFilterOperandException
 	 */

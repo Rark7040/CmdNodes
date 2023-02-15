@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\command_nodes\command\selector\filter;
+namespace rarkhopper\command_nodes\command\selector\argument;
 
 use pocketmine\math\Vector3;
 use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
 use function filter_var;
 use const FILTER_VALIDATE_FLOAT;
 
-final class RadiusFilter extends FilterBase{
+final class RadiusFilter extends ArgumentBase implements IFilter{
+	private const TYPE_RADIUS = 'r';
 	private float $radius;
 
 	public function __construct(string $usedType, string $strOperand){
@@ -20,7 +21,7 @@ final class RadiusFilter extends FilterBase{
 	}
 
 	public static function getTypes() : array{
-		return ['r'];
+		return [self::TYPE_RADIUS];
 	}
 
 	public static function isValidOperand(string $strOperand) : bool{

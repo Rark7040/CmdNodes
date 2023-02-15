@@ -2,19 +2,13 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\command_nodes\command\selector\filter;
+namespace rarkhopper\command_nodes\command\selector\argument;
 
 use pocketmine\entity\Entity;
 use pocketmine\math\Vector3;
 use rarkhopper\command_nodes\command\selector\IOperandsPool;
-use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
 
-interface IMultipleOperandsFilter{
-	/**
-	 * @throws InvalidFilterOperandException
-	 */
-	public function pool(IOperandsPool $pool) : void;
-
+interface IMultipleArgumentFilter extends IPoolableArgument{
 	/**
 	 * @param array<Entity> $entities
 	 * @return array<Entity>
