@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace rarkhopper\command_nodes\command\selector\argument;
 
+use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use rarkhopper\command_nodes\command\selector\IOperandsPool;
 use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
 use function filter_var;
+use function max;
+use function min;
 use const FILTER_VALIDATE_FLOAT;
 
 final class DifferentialVectorFilter extends ArgumentBase implements IMultipleArgumentFilter{
-	private const DIFFERENTIAL_X = 'dx';
-	private const DIFFERENTIAL_Y = 'dy';
-	private const DIFFERENTIAL_Z = 'dz';
+	private const TYPE_DIFFERENTIAL_X = 'dx';
+	private const TYPE_DIFFERENTIAL_Y = 'dy';
+	private const TYPE_DIFFERENTIAL_Z = 'dz';
 	private float $vec;
 
 	public function __construct(string $usedType, private string $strOperand){
@@ -25,9 +28,9 @@ final class DifferentialVectorFilter extends ArgumentBase implements IMultipleAr
 
 	public static function getTypes() : array{
 		return [
-			self::DIFFERENTIAL_X,
-			self::DIFFERENTIAL_Y,
-			self::DIFFERENTIAL_Z
+			self::TYPE_DIFFERENTIAL_X,
+			self::TYPE_DIFFERENTIAL_Y,
+			self::TYPE_DIFFERENTIAL_Z
 		];
 	}
 
@@ -44,6 +47,32 @@ final class DifferentialVectorFilter extends ArgumentBase implements IMultipleAr
 	}
 
 	public function filterOnCompletion(Vector3 $vec3, array $entities, IOperandsPool $pool) : array{
-		// TODO: Implement filterOnCompletion() method.
+		$aabb = $this->getAxisAlignedBB($vec3, $this->getInputtedVector($vec3, $pool));
+		$inBoundsEntities = [];
+
+		foreach($entities as $entity){
+			if(!$aabb->isVectorInside($entity->getPosition())) continue;
+			$inBoundsEntities[] = $entity;
+		}
+		return $inBoundsEntities;
+	}
+
+	private function getInputtedVector(Vector3 $vec3, IOperandsPool $pool) : Vector3{
+		return new Vector3(
+			$pool->getFloat(self::TYPE_DIFFERENTIAL_X) ?? $vec3->x,
+			$pool->getFloat(self::TYPE_DIFFERENTIAL_Y) ?? $vec3->y,
+			$pool->getFloat(self::TYPE_DIFFERENTIAL_Z) ?? $vec3->z
+		);
+	}
+
+	private function getAxisAlignedBB(Vector3 $vecA, Vector3 $vecB) : AxisAlignedBB{
+		return new AxisAlignedBB(
+			min($vecA->x, $vecB->x),
+			min($vecA->y, $vecB->y),
+			min($vecA->z, $vecB->z),
+			max($vecA->x, $vecB->x),
+			max($vecA->y, $vecB->y),
+			max($vecA->z, $vecB->z)
+		);
 	}
 }
