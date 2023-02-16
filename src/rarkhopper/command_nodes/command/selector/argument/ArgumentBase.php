@@ -29,7 +29,7 @@ abstract class ArgumentBase implements IArgument{
 	 * @param array<Entity> $entities
 	 * @return array<int, Entity>
 	 */
-	final protected function orderByDistance(Vector3 $vec3, array $entities) : array{
+	final protected function sortByDistance(Vector3 $vec3, array $entities) : array{
 		$orderedEntities = [];
 
 		foreach($entities as $entity){

@@ -73,7 +73,7 @@ abstract class SelectorBase implements ISelector{
 			$entities = $pooledArg->filterOnCompletion($vec3, $entities, $operandsPool);
 		}
 		foreach($this->filters as $filter){
-			$filter->filter($vec3, $entities);
+			$entities = $filter->filter($vec3, $entities);
 		}
 		return $entities;
 	}

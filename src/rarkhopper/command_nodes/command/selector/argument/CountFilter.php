@@ -6,12 +6,13 @@ namespace rarkhopper\command_nodes\command\selector\argument;
 
 use pocketmine\math\Vector3;
 use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
+use function abs;
 use function array_slice;
 use function count;
 use function filter_var;
 use const FILTER_VALIDATE_INT;
-
-final class CountFilter extends ArgumentBase implements IFilter{//TODO 負の値もサポート
+//TODO: type=!1
+final class CountFilter extends ArgumentBase implements IFilter{
 	private const TYPE_COUNT = 'c';
 	private int $maxCnt;
 
@@ -27,8 +28,7 @@ final class CountFilter extends ArgumentBase implements IFilter{//TODO 負の値
 	}
 
 	public static function isValidOperand(string $strOperand) : bool{
-		if(filter_var($strOperand, FILTER_VALIDATE_INT) === false) return false;
-		return (int) $strOperand > 0;
+		return filter_var($strOperand, FILTER_VALIDATE_INT) !== false;
 	}
 
 	public function getOperand() : int{
@@ -36,7 +36,10 @@ final class CountFilter extends ArgumentBase implements IFilter{//TODO 負の値
 	}
 
 	public function filter(Vector3 $vec3, array $entities) : array{
-		if(count($entities) <= $this->maxCnt) return $entities;
-		return array_slice($this->orderByDistance($vec3, $entities), 0, $this->maxCnt);
+		if(count($entities) <= abs($this->maxCnt)) return $entities;
+		$sortedEntities = $this->sortByDistance($vec3, $entities);
+		return $this->maxCnt < 0?
+			array_slice($sortedEntities, $this->maxCnt):
+			array_slice($sortedEntities, 0, $this->maxCnt);
 	}
 }

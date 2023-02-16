@@ -35,7 +35,7 @@ final class MinRadiusFilter extends ArgumentBase implements IFilter{
 	public function filter(Vector3 $vec3, array $entities) : array{
 		$filteredEntities = [];
 
-		foreach($this->orderByDistance($vec3, $entities) as $distance => $entity){
+		foreach($this->sortByDistance($vec3, $entities) as $distance => $entity){
 			if($distance < $this->minRadius) continue;
 			$filteredEntities[] = $entity;
 		}

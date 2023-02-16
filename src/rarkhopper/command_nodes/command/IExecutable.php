@@ -7,7 +7,7 @@ namespace rarkhopper\command_nodes\command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\CommandException;
 
-interface ICommandNodesCommand extends IPermissionTestable{
+interface IExecutable extends IPermissionTestable{
 	/**
 	 * コマンドが実行されたときに呼び出される関数
 	 * @param CommandSender $sender コマンドを実行したプレイヤー

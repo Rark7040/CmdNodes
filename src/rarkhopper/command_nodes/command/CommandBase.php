@@ -11,11 +11,10 @@ use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
 use function array_shift;
 use function strtolower;
 
-abstract class CommandBase extends Command implements ICommandNodesCommand{
+abstract class CommandBase extends Command implements IExecutable{
 	/** @var array<string, SubCommandBase> */
 	private array $subCmds = [];
 
-	//TODO: support double quart args  "test man"
 	abstract public function onRun(CommandSender $sender, array $args) : void;
 
 	/**

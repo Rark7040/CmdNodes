@@ -13,7 +13,7 @@ use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkPa
 use rarkhopper\command_nodes\command\params\ICommandParameter;
 use function explode;
 
-abstract class SubCommandBase implements ICommandNodesCommand{
+abstract class SubCommandBase implements IExecutable{
 	/** @var array<ICommandParameter> */
 	private array $params = [];
 	private ?string $permission = null;
