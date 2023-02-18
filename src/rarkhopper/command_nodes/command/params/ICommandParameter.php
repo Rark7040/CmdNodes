@@ -5,10 +5,9 @@ declare(strict_types = 1);
 namespace rarkhopper\command_nodes\command\params;
 
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
+use rarkhopper\command_nodes\command\ICommandArgument;
 
-interface ICommandParameter{
-	public function getName() : string;
-
+interface ICommandParameter extends ICommandArgument{
 	/**
 	 * @internal
 	 */

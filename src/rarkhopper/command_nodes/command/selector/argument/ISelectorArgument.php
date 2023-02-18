@@ -6,7 +6,7 @@ namespace rarkhopper\command_nodes\command\selector\argument;
 
 use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
 
-interface IArgument{
+interface ISelectorArgument{
 	/**
 	 * @throws InvalidFilterOperandException
 	 */

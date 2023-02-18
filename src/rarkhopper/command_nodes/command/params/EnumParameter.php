@@ -30,7 +30,7 @@ class EnumParameter extends CommandParameterBase{
 
 	private function getEnumObject() : CommandEnum{
 		return new CommandEnum(
-			ucfirst($this->getName()),
+			ucfirst($this->getLabel()),
 			$this->enums,
 		);
 	}

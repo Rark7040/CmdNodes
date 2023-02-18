@@ -26,7 +26,7 @@ abstract class CommandParameterBase implements ICommandParameter{
 	 */
 	abstract protected function getNetworkType() : int;
 
-	public function getName() : string{
+	public function getLabel() : string{
 		return $this->name;
 	}
 
@@ -44,7 +44,7 @@ abstract class CommandParameterBase implements ICommandParameter{
 
 	public function asNetworkParameter() : NetworkParameter{
 		$param = new NetworkParameter();
-		$param->paramName = $this->getName();
+		$param->paramName = $this->getLabel();
 		$param->paramType = AvailableCommandsPacket::ARG_FLAG_VALID | $this->getNetworkType();
 		$param->flags = $this->getFlags();
 		$param->isOptional = $this->isOptional();

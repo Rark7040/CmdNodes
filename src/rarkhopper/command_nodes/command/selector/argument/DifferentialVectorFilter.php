@@ -13,7 +13,7 @@ use function max;
 use function min;
 use const FILTER_VALIDATE_FLOAT;
 
-final class DifferentialVectorFilter extends ArgumentBase implements IMultipleArgumentFilter{
+final class DifferentialVectorFilter extends SelectorArgumentBase implements IMultipleArgumentFilter{
 	private const TYPE_DIFFERENTIAL_X = 'dx';
 	private const TYPE_DIFFERENTIAL_Y = 'dy';
 	private const TYPE_DIFFERENTIAL_Z = 'dz';

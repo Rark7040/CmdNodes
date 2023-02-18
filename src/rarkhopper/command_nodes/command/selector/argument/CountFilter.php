@@ -11,8 +11,8 @@ use function array_slice;
 use function count;
 use function filter_var;
 use const FILTER_VALIDATE_INT;
-//TODO: type=!1
-final class CountFilter extends ArgumentBase implements IFilter{
+
+final class CountFilter extends SelectorArgumentBase implements IFilter{
 	private const TYPE_COUNT = 'c';
 	private int $maxCnt;
 

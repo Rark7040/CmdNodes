@@ -13,7 +13,7 @@ use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkPa
 use rarkhopper\command_nodes\command\params\ICommandParameter;
 use function explode;
 
-abstract class SubCommandBase implements IExecutable{
+abstract class SubCommandBase implements IExecutable, ICommandArgument{
 	/** @var array<ICommandParameter> */
 	private array $params = [];
 	private ?string $permission = null;
@@ -88,7 +88,7 @@ abstract class SubCommandBase implements IExecutable{
 	/**
 	 * @return NetworkParameter このサブコマンドのラベル情報を{@see CommandParameter}として返します
 	 */
-	private function asNetworkParameter() : NetworkParameter{
+	public function asNetworkParameter() : NetworkParameter{
 		$label = $this->getLabel();
 		$param = new NetworkParameter();
 		$param->paramName = $label;
@@ -101,7 +101,7 @@ abstract class SubCommandBase implements IExecutable{
 	/**
 	 * @return array<NetworkParameter> このサブコマンド以降の値を{@see CommandParameter}として返します
 	 */
-	public function getParameters() : array{
+	public function getNetworkParameters() : array{
 		$params = [$this->asNetworkParameter()];
 
 		foreach($this->params as $param){

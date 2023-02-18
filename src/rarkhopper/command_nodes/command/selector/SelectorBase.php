@@ -7,9 +7,10 @@ namespace rarkhopper\command_nodes\command\selector;
 use pocketmine\entity\Entity;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
-use rarkhopper\command_nodes\command\selector\argument\IArgument;
 use rarkhopper\command_nodes\command\selector\argument\IFilter;
 use rarkhopper\command_nodes\command\selector\argument\IMultipleArgumentFilter;
+use rarkhopper\command_nodes\command\selector\argument\IPoolableArgument;
+use rarkhopper\command_nodes\command\selector\argument\ISelectorArgument;
 use rarkhopper\command_nodes\command\selector\argument\IVectorArgument;
 use function end;
 
@@ -19,13 +20,13 @@ use function end;
 abstract class SelectorBase implements ISelector{
 	/** @var array<IVectorArgument> */
 	private array $vecArgs = [];
-	/** @var array<IMultipleArgumentFilter> */
-	private array $multipleOperandsArgs = [];
+	/** @var array<IPoolableArgument> */
+	private array $poolableArgs = [];
 	/** @var array<IFilter> */
 	private array $filters = [];
 
 	/**
-	 * @param array<IArgument> $args
+	 * @param array<ISelectorArgument> $args
 	 */
 	final public function __construct(private Player $executor, private array $args){
 		$this->allocateArguments();
@@ -36,7 +37,7 @@ abstract class SelectorBase implements ISelector{
 	}
 
 	/**
-	 * @return IArgument[]
+	 * @return ISelectorArgument[]
 	 */
 	public function getArguments() : array{
 		return $this->args;
@@ -47,8 +48,8 @@ abstract class SelectorBase implements ISelector{
 			if($arg instanceof IVectorArgument){
 				$this->vecArgs[] = $arg;
 			}
-			if($arg instanceof IMultipleArgumentFilter){
-				$this->multipleOperandsArgs[] = $arg;
+			if($arg instanceof IPoolableArgument){
+				$this->poolableArgs[] = $arg;
 			}
 			if($arg instanceof IFilter){
 				$this->filters[] = $arg;
@@ -65,12 +66,13 @@ abstract class SelectorBase implements ISelector{
 		$operandsPool = new SimpleOperandsPool();
 		$pooledArgs = [];
 
-		foreach($this->multipleOperandsArgs as $multipleOperandsArg){
-			$multipleOperandsArg->pool($operandsPool);
-			$pooledArgs[$multipleOperandsArg::class] = $multipleOperandsArg;
+		foreach($this->poolableArgs as $poolable){
+			$poolable->pool($operandsPool);
+			$pooledArgs[$poolable::class] = $poolable;
 		}
-		foreach($pooledArgs as $pooledArg){
-			$entities = $pooledArg->filterOnCompletion($vec3, $entities, $operandsPool);
+		foreach($pooledArgs as $pooled){
+			if(!$pooled instanceof IMultipleArgumentFilter) continue;
+			$entities = $pooled->filterOnCompletion($vec3, $entities, $operandsPool);
 		}
 		foreach($this->filters as $filter){
 			$entities = $filter->filter($vec3, $entities);

@@ -6,11 +6,11 @@ namespace rarkhopper\command_nodes\command\selector;
 
 use pocketmine\entity\Entity;
 use pocketmine\player\Player;
-use rarkhopper\command_nodes\command\selector\argument\IArgument;
+use rarkhopper\command_nodes\command\selector\argument\ISelectorArgument;
 
 interface ISelector{
 	/**
-	 * @param array<IArgument> $args
+	 * @param array<ISelectorArgument> $args
 	 */
 	public function __construct(Player $executor, array $args);
 
@@ -19,7 +19,7 @@ interface ISelector{
 	public function getExecutor() : Player;
 
 	/**
-	 * @return IArgument[]
+	 * @return ISelectorArgument[]
 	 */
 	public function getArguments() : array;
 

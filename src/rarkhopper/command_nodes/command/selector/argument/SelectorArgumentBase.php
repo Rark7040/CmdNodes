@@ -11,7 +11,7 @@ use function array_multisort;
 use const SORT_DESC;
 use const SORT_NUMERIC;
 
-abstract class ArgumentBase implements IArgument{
+abstract class SelectorArgumentBase implements ISelectorArgument{
 	/**
 	 * @throws InvalidFilterOperandException
 	 */

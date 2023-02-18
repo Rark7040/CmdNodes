@@ -9,7 +9,7 @@ use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
 use function filter_var;
 use const FILTER_VALIDATE_FLOAT;
 
-final class RadiusFilter extends ArgumentBase implements IFilter{
+final class RadiusFilter extends SelectorArgumentBase implements IFilter{
 	private const TYPE_RADIUS = 'r';
 	private float $radius;
 

@@ -10,7 +10,7 @@ use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
 use function filter_var;
 use const FILTER_VALIDATE_FLOAT;
 
-final class VectorArgument extends ArgumentBase implements IVectorArgument{
+final class VectorArgument extends SelectorArgumentBase implements IVectorArgument{
 	private const TYPE_X = 'x';
 	private const TYPE_Y = 'y';
 	private const TYPE_Z = 'z';
