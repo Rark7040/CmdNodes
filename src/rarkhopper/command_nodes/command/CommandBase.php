@@ -8,32 +8,48 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
+use rarkhopper\command_nodes\command\params\ICommandParameter;
+use RuntimeException;
 use function array_shift;
-use function strtolower;
 
 abstract class CommandBase extends Command implements IExecutable{
-	private ?IOverloadsList $overloads = null;
+	use ExecutableUtilsTrait;
+
+	private ?ICommandArgumentsList $args = null;
 
 	abstract public function onRun(CommandSender $sender, array $args) : void;
 
-	public function setOverloads(?IOverloadsList $overloads) : void{
-		$this->overloads = $overloads;
+	public function setArguments(?ICommandArgumentsList $args) : void{ //HACK: いい書き方絶対他にある
+		$this->args = $args;
 	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args) {
 		if(!$this->testPermission($sender)) return;
-		$subCmdLabel = array_shift($args);
+		$firstArg = array_shift($args);
 
-		if($subCmdLabel === null){
+		if($firstArg === null || $this->args === null){
 			$this->onRun($sender, $args);
 			return;
 		}
-		$subCmd = $this->subCmds[strtolower((string) $subCmdLabel)] ?? null;
+		$argInstances = $this->args->getArguments();
+		$firstArgInstance = array_shift($argInstances);
 
-		if($subCmd === null){
-			throw new InvalidCommandSyntaxException();
+		if($firstArgInstance instanceof IExecutable){
+			$firstArgInstance->onRun($sender, $args);
+			return;
 		}
-		$subCmd->onRun($sender, $args);
+
+		if($firstArgInstance instanceof ICommandParameter){
+			$params = [];
+
+			foreach($argInstances as $param){
+				if(!$param instanceof ICommandParameter) throw new RuntimeException(); //TODO: msg
+				$params[] = $param;
+			}
+			$this->onRun($sender,  $this->parseParameters($args, $params));
+			return;
+		}
+		throw new InvalidCommandSyntaxException();
 	}
 
 	/**
@@ -41,6 +57,6 @@ abstract class CommandBase extends Command implements IExecutable{
 	 * @return NetworkParameter[][]
 	 */
 	final public function getOverloads(CommandSender $receiver) : array{
-		return $this->overloads === null? []: $this->overloads->asNetworkParameters($receiver);
+		return $this->args === null? []: $this->args->asNetworkParameters($receiver);
 	}
 }

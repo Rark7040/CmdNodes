@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace rarkhopper\command_nodes\command\params;
 
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
+use rarkhopper\command_nodes\command\selector\ISelector;
+use rarkhopper\command_nodes\CommandNodes;
+use RuntimeException;
 
 class TargetParameter extends CommandParameterBase{
 
@@ -12,7 +15,13 @@ class TargetParameter extends CommandParameterBase{
 		return AvailableCommandsPacket::ARG_TYPE_TARGET;
 	}
 
-	public function validate(string $rawArg) : bool{
-		return true;
+	public function parseArgument(string $rawArg) : ISelector{
+		$nodes = CommandNodes::getInstance();
+
+		if($nodes === null) throw new RuntimeException(); //TODO: msg
+		$selector = $nodes->getSelectorParser()->parse($rawArg);
+
+		if($selector === null) throw new RuntimeException(); //TODO: msg
+		return $selector;
 	}
 }

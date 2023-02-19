@@ -8,9 +8,16 @@ use pocketmine\command\CommandSender;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
 use function strtolower;
 
-final class SubCommandsList implements IOverloadsList{
+final class SubCommandsList implements ICommandArgumentsList{
 	/** @var array<string, SubCommandBase> */
 	private array $subCmds = [];
+
+	/**
+	 * @return array<string, SubCommandBase>
+	 */
+	public function getArguments() : array{
+		return $this->subCmds;
+	}
 
 	/**
 	 * @param SubCommandBase $subCmd このコマンドの1つ目の引数となる文字列を持つサブコマンド

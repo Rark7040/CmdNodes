@@ -24,6 +24,7 @@ use rarkhopper\command_nodes\utils\SimpleNetworkCommandDataUpdater;
 use ReflectionException;
 
 final class CommandNodes implements PluginOwned{
+	private static ?CommandNodes $instance = null;
 	private ?RegisteredListener $registeredListener = null;
 	private ICmdNodesCommandMap $cmdMap;
 	private ICommandToNetworkDataParser $parser;
@@ -44,12 +45,17 @@ final class CommandNodes implements PluginOwned{
 		?INetworkCommandDataUpdater $updater = null,
 		?IStringToSelectorParser $selectorParser = null
 	){
+		self::$instance = $this;
 		$this->cmdMap = $cmdMap ?? new SimpleCmdNodesCommandMap();
 		$this->parser = $parser ?? new SimpleCommandToNetworkDataParser();
 		$this->updater = $updater ?? new SimpleNetworkCommandDataUpdater();
 		$this->selectorParser = $selectorParser ?? new SimpleStringToSelectorParser(
 			new SimpleStringToArgumentParser()
 		);
+	}
+
+	public static function getInstance() : ?CommandNodes{
+		return self::$instance;
 	}
 
 	/**

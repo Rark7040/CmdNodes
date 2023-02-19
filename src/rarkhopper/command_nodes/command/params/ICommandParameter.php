@@ -15,6 +15,6 @@ interface ICommandParameter extends ICommandArgument{
 	public function isOptional() : bool;
 	public function getFlags() : int;
 	//TODO: failed message
-	public function validate(string $rawArg) : bool;
+	public function parseArgument(string $rawArg) : mixed;
 	public function getSpan() : int;
 }

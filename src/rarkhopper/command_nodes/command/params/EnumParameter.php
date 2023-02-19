@@ -7,6 +7,7 @@ namespace rarkhopper\command_nodes\command\params;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
+use RuntimeException;
 use function in_array;
 use function ucfirst;
 
@@ -24,8 +25,9 @@ class EnumParameter extends CommandParameterBase{
 		return $param;
 	}
 
-	public function validate(string $rawArg) : bool{
-		return in_array($rawArg, $this->enums, true);
+	public function parseArgument(string $rawArg) : mixed{
+		if(!in_array($rawArg, $this->enums, true)) throw new RuntimeException(); //TODO: msg
+		return $rawArg;
 	}
 
 	private function getEnumObject() : CommandEnum{
