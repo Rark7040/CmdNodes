@@ -2,16 +2,21 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\command_nodes\command;
+namespace rarkhopper\command_nodes\command\parameter;
 
+use InvalidArgumentException;
 use pocketmine\command\CommandSender;
-use rarkhopper\command_nodes\command\params\ICommandParameter;
 
-final class ParameterList implements ICommandArgumentList{
+final class CommandParameterList implements ICommandParameterList{
 	/** @var array<int, ICommandParameter> */
 	private array $params = [];
 
-	public function registerParameter(ICommandParameter $param, int $offset) : ParameterList{ //TODO: validate pos
+	public function getArguments() : array{
+		return $this->params;
+	}
+
+	public function registerParameter(ICommandParameter $param, int $offset) : CommandParameterList{
+		if($offset < 0) throw new InvalidArgumentException('offset must be greater than 0');
 		$this->params[$offset] = $param;
 		return $this;
 	}

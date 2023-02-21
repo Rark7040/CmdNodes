@@ -8,33 +8,19 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
 
-abstract class CommandBase extends Command implements IExecutable, IArgumentHoldable{
-	/** @var array<int, ICommandArgumentList> */
-	private array $argsLists = [];
-
-	public function appendArgumentList(ICommandArgumentList $args) : void{
-		$this->argsLists[] = $args;
-	}
-
-	public function getArgumentLists() : array{
-		return $this->argsLists;
-	}
-
-	public function execute(CommandSender $sender, string $commandLabel, array $args) {
-		if(!$this->testPermission($sender)) return;
-
-	}
+/**
+ * @internal
+ */
+abstract class CommandBase extends Command implements IExecutable{
 
 	/**
 	 * @internal
-	 * @return NetworkParameter[][]
+	 * @return array<array<NetworkParameter>>
 	 */
-	final public function getOverloads(CommandSender $receiver) : array{
-		$overloads = [];
+	abstract public function getOverloads(CommandSender $receiver) : array;
 
-		foreach($this->argsLists as $ls){
-			$overloads[] = $ls->asNetworkParameters($receiver);
-		}
-		return $overloads;
+	public function execute(CommandSender $sender, string $commandLabel, array $args) {
+		if(!$this->testPermission($sender)) return;
+		$this->prepareExec($sender, $args);
 	}
 }

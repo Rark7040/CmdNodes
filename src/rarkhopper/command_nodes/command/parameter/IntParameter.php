@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\command_nodes\command\params;
+namespace rarkhopper\command_nodes\command\parameter;
 
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use RuntimeException;
@@ -15,7 +15,7 @@ class IntParameter extends CommandParameterBase{
 	}
 
 	public function parseArgument(string $rawArg) : int{
-		if(filter_var($rawArg, FILTER_VALIDATE_INT) !== false) throw new RuntimeException(); //TODO: msg
+		if(filter_var($rawArg, FILTER_VALIDATE_INT) === false) throw new RuntimeException(); //TODO: msg
 		return (int) $rawArg;
 	}
 }

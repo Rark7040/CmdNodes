@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace rarkhopper\command_nodes\command\params;
+namespace rarkhopper\command_nodes\command\parameter;
 
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
-use rarkhopper\command_nodes\command\ICommandArgument;
+use rarkhopper\command_nodes\command\argument\ICommandArgument;
 
 interface ICommandParameter extends ICommandArgument{
 	/**

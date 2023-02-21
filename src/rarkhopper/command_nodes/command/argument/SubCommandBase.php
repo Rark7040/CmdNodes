@@ -2,17 +2,26 @@
 
 declare(strict_types = 1);
 
-namespace rarkhopper\command_nodes\command;
+namespace rarkhopper\command_nodes\command\argument;
 
 use pocketmine\command\CommandSender;
+use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
+use rarkhopper\command_nodes\command\handler\ArgumentParserTrait;
+use rarkhopper\command_nodes\command\IExecutable;
+use rarkhopper\command_nodes\command\INetworkParameters;
+use rarkhopper\command_nodes\command\parameter\ICommandParameterList;
+use rarkhopper\command_nodes\exception\ArgumentParseFailedException;
 use function array_merge;
+use function array_values;
 use function explode;
 
-abstract class SubCommandBase implements IExecutable, ICommandArgument, ICommandArgumentList{//TODO: test permission
-	private ?ICommandArgumentList $argList = null;
+abstract class SubCommandBase implements IExecutable, ICommandArgument, INetworkParameters{
+	use ArgumentParserTrait;
+
+	private ?ICommandParameterList $params = null;
 	private ?string $permission = null;
 
 	/**
@@ -20,16 +29,26 @@ abstract class SubCommandBase implements IExecutable, ICommandArgument, ICommand
 	 */
 	public function __construct(private string $label){}
 
-	public function setArgumentList(?ICommandArgumentList $argList) : void{
-		$this->argList = $argList;
+	public function setParameters(?ICommandParameterList $params) : void{
+		$this->params = $params;
 	}
 
-	public function getArgumentList() : ?ICommandArgumentList{
-		return $this->argList;
+	public function getParameters() : ?ICommandParameterList{
+		return $this->params;
 	}
 
 	public function getLabel() : string{
 		return $this->label;
+	}
+
+	final public function prepareExec(CommandSender $sender, array $args) : void{
+		if(!$this->testPermission($sender)) return;
+		try{
+			$this->exec($sender, $args, $this->parseArguments(array_values($args), $this->params === null? []: $this->params->getArguments()));
+
+		}catch(ArgumentParseFailedException $err){
+			throw new InvalidCommandSyntaxException($err->getMessage());
+		}
 	}
 
 	public function setPermission(?string $permission) : void{
@@ -60,9 +79,12 @@ abstract class SubCommandBase implements IExecutable, ICommandArgument, ICommand
 
 	public function asNetworkParameters(CommandSender $receiver) : array{
 		if(!$this->testPermission($receiver)) return [];
-		$params = [$this->asNetworkParameter()];
+		$params = [];
 
-		if($this->argList === null) return $params;
-		return array_merge($params, $this->argList->asNetworkParameters($receiver));
+		/** @var ICommandArgument $param */
+		foreach(array_merge([$this], $this->params === null? []: $this->params->getArguments()) as $param){
+			$params[] = $param->asNetworkParameter();
+		}
+		return $params;
 	}
 }

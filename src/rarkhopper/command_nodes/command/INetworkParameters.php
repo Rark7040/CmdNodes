@@ -7,7 +7,7 @@ namespace rarkhopper\command_nodes\command;
 use pocketmine\command\CommandSender;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
 
-interface ICommandArgumentList{
+interface INetworkParameters{
 	/**
 	 * @return array<NetworkParameter>
 	 */
