@@ -6,7 +6,11 @@ namespace rarkhopper\command_nodes\command;
 
 use rarkhopper\command_nodes\command\params\ICommandParameter;
 
-trait ExecutableUtilsTrait{
+/**
+ * @implements IArgumentHoldable<mixed>
+ */
+trait ArgumentHoldableTrait{
+
 	/**
 	 * @param array<string>            $args
 	 * @param array<ICommandParameter> $params
@@ -25,7 +29,7 @@ trait ExecutableUtilsTrait{
 				}
 				return $results;
 			}
-			$results[$param->getLabel()] = $param->parseArgument($arg);
+			$results[$param->getLabel()] = $param->parseArgument($arg); //TODO: result type
 		}
 		return $results;
 	}

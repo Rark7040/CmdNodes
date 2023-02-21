@@ -17,9 +17,4 @@ interface IExecutable extends IPermissionTestable{
 	public function onRun(CommandSender $sender, array $args) : void;
 
 	public function getLabel() : string;
-
-	/**
-	 * @return string[]
-	 */
-	public function getAliases() : array;
 }
