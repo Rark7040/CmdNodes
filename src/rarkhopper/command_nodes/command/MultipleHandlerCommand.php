@@ -7,15 +7,12 @@ namespace rarkhopper\command_nodes\command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use rarkhopper\command_nodes\command\argument\SubCommandBase;
-use rarkhopper\command_nodes\command\handler\ArgumentParserTrait;
 use RuntimeException;
 use function array_shift;
 use function gettype;
 use function is_string;
 
 abstract class MultipleHandlerCommand extends CommandBase{
-	use ArgumentParserTrait;
-
 	/** @var array<string, SubCommandBase> */
 	private array $subCmds = [];
 
