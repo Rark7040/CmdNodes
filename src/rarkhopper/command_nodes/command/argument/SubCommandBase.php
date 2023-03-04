@@ -9,33 +9,23 @@ use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
-use rarkhopper\command_nodes\command\handler\ArgumentParserTrait;
+use rarkhopper\command_nodes\command\handler\ArgumentHoldableTrait;
 use rarkhopper\command_nodes\command\IExecutable;
 use rarkhopper\command_nodes\command\INetworkParameters;
-use rarkhopper\command_nodes\command\parameter\ICommandParameterList;
 use rarkhopper\command_nodes\exception\ArgumentParseFailedException;
 use function array_merge;
 use function array_values;
 use function explode;
 
 abstract class SubCommandBase implements IExecutable, ICommandArgument, INetworkParameters{
-	use ArgumentParserTrait;
+	use ArgumentHoldableTrait;
 
-	private ?ICommandParameterList $params = null;
 	private ?string $permission = null;
 
 	/**
 	 * @param string $label このサブコマンドが{@see CommandBase}から見て1つ目のサブコマンドの場合、/foo barのbarの部分にあたる文字列
 	 */
 	public function __construct(private string $label){}
-
-	public function setParameters(?ICommandParameterList $params) : void{
-		$this->params = $params;
-	}
-
-	public function getParameters() : ?ICommandParameterList{
-		return $this->params;
-	}
 
 	public function getLabel() : string{
 		return $this->label;
@@ -44,7 +34,7 @@ abstract class SubCommandBase implements IExecutable, ICommandArgument, INetwork
 	final public function prepareExec(CommandSender $sender, array $args) : void{
 		if(!$this->testPermission($sender)) return;
 		try{
-			$this->exec($sender, $args, $this->parseArguments(array_values($args), $this->params === null? []: $this->params->getArguments()));
+			$this->exec($sender, $args, $this->parseParameters(array_values($args), $this->params));
 
 		}catch(ArgumentParseFailedException $err){
 			throw new InvalidCommandSyntaxException($err->getMessage());
@@ -81,8 +71,7 @@ abstract class SubCommandBase implements IExecutable, ICommandArgument, INetwork
 		if(!$this->testPermission($receiver)) return [];
 		$params = [];
 
-		/** @var ICommandArgument $param */
-		foreach(array_merge([$this], $this->params === null? []: $this->params->getArguments()) as $param){
+		foreach(array_merge([$this], $this->params) as $param){
 			$params[] = $param->asNetworkParameter();
 		}
 		return $params;

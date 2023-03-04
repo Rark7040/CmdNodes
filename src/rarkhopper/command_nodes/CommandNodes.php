@@ -55,6 +55,9 @@ final class CommandNodes implements PluginOwned{
 	}
 
 	public static function getInstance() : ?CommandNodes{
+		if(self::$instance === null){
+			Server::getInstance()->getLogger()->warning("accessing command nodes instance on before initialization");
+		}
 		return self::$instance;
 	}
 

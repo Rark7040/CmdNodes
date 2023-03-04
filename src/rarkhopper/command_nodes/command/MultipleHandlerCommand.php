@@ -16,12 +16,13 @@ abstract class MultipleHandlerCommand extends CommandBase{
 	/** @var array<string, SubCommandBase> */
 	private array $subCmds = [];
 
-	public function registerSubCommand(SubCommandBase $subCmd) : void{
+	public function registerSubCommand(SubCommandBase $subCmd) : MultipleHandlerCommand{
 		$this->subCmds[$subCmd->getLabel()] = $subCmd;
+		return $this;
 	}
 
 	/**
-	 * @return array<SubCommandBase>
+	 * @return array<string, SubCommandBase>
 	 */
 	public function getSubCommands() : array{
 		return $this->subCmds;
@@ -35,17 +36,17 @@ abstract class MultipleHandlerCommand extends CommandBase{
 			$this->exec($sender, $args, []);
 			return;
 		}
-		if(!is_string($headArg)) throw new RuntimeException('arguments must be a string, but got ' . gettype($headArg));
+		if(!is_string($headArg)) throw new RuntimeException('arguments must be a string, but given ' . gettype($headArg));
 		if(!isset($this->subCmds[$headArg])) throw new InvalidCommandSyntaxException();
 		$this->subCmds[$headArg]->prepareExec($sender, $args);
 	}
 
 	final public function getOverloads(CommandSender $receiver) : array{
-		$overload = [];
+		$overloads = [];
 
 		foreach($this->subCmds as $subCmd){
-			$overload[] = $subCmd->asNetworkParameters($receiver);
+			$overloads[] = $subCmd->asNetworkParameters($receiver);
 		}
-		return $overload;
+		return $overloads;
 	}
 }
