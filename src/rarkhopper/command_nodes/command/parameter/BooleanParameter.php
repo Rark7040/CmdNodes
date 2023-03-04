@@ -14,7 +14,7 @@ class BooleanParameter extends EnumParameter{
 	public array $enums = ['true', 'false'];
 
 	public function parseArgument(string $rawArg) : IParameterParseResult{
-		if(filter_var($rawArg, FILTER_VALIDATE_BOOLEAN) === false) throw new RuntimeException(); //TODO: msg
+		if(filter_var($rawArg, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) === null) throw new RuntimeException(); //TODO: msg
 		return new BooleanResult((bool) $rawArg);
 	}
 }
