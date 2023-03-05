@@ -12,5 +12,5 @@ interface IStringToFilterParser{
 	 */
 	public function register(array $types, string $filterClass, bool $override = false) : IStringToFilterParser;
 
-	public function getFilter(string $strFilter) : ?IFilter;
+	public function getFilter(string $strArg) : ?IFilter;
 }

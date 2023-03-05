@@ -15,7 +15,7 @@ final class RandomPlayerSelector extends SelectorBase{
 	}
 
 	public function selectEntities(Player $executor) : array{
-		$players = $this->filterEntities(Server::getInstance()->getOnlinePlayers());
+		$players = $this->filterEntities($executor, Server::getInstance()->getOnlinePlayers());
 		$playersCnt = count($players);
 
 		if($playersCnt < 1) return [];

@@ -6,7 +6,6 @@ namespace rarkhopper\command_nodes\command;
 
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
-use rarkhopper\command_nodes\command\handler\ArgumentHoldableTrait;
 use rarkhopper\command_nodes\exception\ArgumentParseFailedException;
 use function array_values;
 

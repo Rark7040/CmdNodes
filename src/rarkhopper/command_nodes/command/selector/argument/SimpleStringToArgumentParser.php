@@ -7,6 +7,7 @@ namespace rarkhopper\command_nodes\command\selector\argument;
 use pocketmine\Server;
 use rarkhopper\command_nodes\exception\SelectorException;
 use function explode;
+use function str_contains;
 
 /**
  * @internal
@@ -20,7 +21,7 @@ final class SimpleStringToArgumentParser implements IStringToFilterParser{
 	}
 
 	private function setDefaults() : void{
-
+		$this->register(CountFilter::getTypes(), CountFilter::class);
 	}
 
 	public function register(array $types, string $filterClass, bool $override = false) : IStringToFilterParser{
@@ -36,13 +37,14 @@ final class SimpleStringToArgumentParser implements IStringToFilterParser{
 		return $this;
 	}
 
-	public function getFilter(string $strFilter) : ?IFilter{
-		[$type, $operand] = explode('=', $strFilter, 2);
+	public function getFilter(string $strArg) : ?IFilter{
+		if(!str_contains($strArg, '=')) return null;
+		[$type, $operand] = explode('=', $strArg, 2);
 
 		if($type === "" || $operand === "") return null;
 		$filterClass = $this->filters[$type] ?? null;
 
 		if($filterClass === null) return null;
-		return new $filterClass($operand);
+		return new $filterClass($type, $operand);
 	}
 }

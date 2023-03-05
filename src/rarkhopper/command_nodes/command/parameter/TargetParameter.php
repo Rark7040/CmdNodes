@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace rarkhopper\command_nodes\command\parameter;
 
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
+use pocketmine\Server;
 use rarkhopper\command_nodes\command\parameter\result\IParameterParseResult;
+use rarkhopper\command_nodes\command\parameter\result\PlayerResult;
 use rarkhopper\command_nodes\command\parameter\result\SelectorResult;
 use rarkhopper\command_nodes\CommandNodes;
 use RuntimeException;
@@ -21,7 +23,9 @@ class TargetParameter extends CommandParameterBase{
 		if($nodes === null) throw new RuntimeException(); //TODO: msg
 		$selector = $nodes->getSelectorParser()->parse($rawArg);
 
-		if($selector === null) throw new RuntimeException(); //TODO: msg
+		if($selector === null){
+			return new PlayerResult(Server::getInstance()->getPlayerExact($rawArg));
+		}
 		return new SelectorResult($selector);
 	}
 }

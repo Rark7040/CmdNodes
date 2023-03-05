@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace rarkhopper\command_nodes\command\handler;
+namespace rarkhopper\command_nodes\command;
 
-use rarkhopper\command_nodes\command\IExecutable;
 use rarkhopper\command_nodes\command\parameter\ICommandParameter;
 use rarkhopper\command_nodes\command\parameter\result\IParameterParseResult;
 use rarkhopper\command_nodes\exception\ArgumentParseFailedException;

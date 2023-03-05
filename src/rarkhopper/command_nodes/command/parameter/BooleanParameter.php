@@ -8,13 +8,17 @@ use rarkhopper\command_nodes\command\parameter\result\BooleanResult;
 use rarkhopper\command_nodes\command\parameter\result\IParameterParseResult;
 use RuntimeException;
 use function filter_var;
+use function is_bool;
+use const FILTER_NULL_ON_FAILURE;
 use const FILTER_VALIDATE_BOOLEAN;
 
 class BooleanParameter extends EnumParameter{
 	public array $enums = ['true', 'false'];
 
 	public function parseArgument(string $rawArg) : IParameterParseResult{
-		if(filter_var($rawArg, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) === null) throw new RuntimeException(); //TODO: msg
-		return new BooleanResult((bool) $rawArg);
+		$arg = filter_var($rawArg, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+
+		if(!is_bool($arg)) throw new RuntimeException(); //TODO: msg
+		return new BooleanResult($arg);
 	}
 }

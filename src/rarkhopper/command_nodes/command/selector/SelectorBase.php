@@ -28,12 +28,8 @@ abstract class SelectorBase implements ISelector{
 	/**
 	 * @param array<ISelectorArgument> $args
 	 */
-	final public function __construct(private Player $executor, private array $args){
+	final public function __construct(private array $args){
 		$this->allocateArguments();
-	}
-
-	public function getExecutor() : Player{
-		return $this->executor;
 	}
 
 	/**
@@ -61,8 +57,8 @@ abstract class SelectorBase implements ISelector{
 	 * @param array<Entity> $entities
 	 * @return array<Entity>
 	 */
-	final protected function filterEntities(array $entities) : array{
-		$vec3 = $this->getSelectorVector();
+	final protected function filterEntities(Player $executor, array $entities) : array{
+		$vec3 = $this->getSelectorVector($executor);
 		$operandsPool = new SimpleOperandsPool();
 		$pooledArgs = [];
 
@@ -80,9 +76,9 @@ abstract class SelectorBase implements ISelector{
 		return $entities;
 	}
 
-	private function getSelectorVector() : Vector3{
+	private function getSelectorVector(Player $executor) : Vector3{
 		$vectorPool = new SimpleOperandsPool();
-		$vec3 = $this->executor->getPosition()->asVector3();
+		$vec3 = $executor->getPosition()->asVector3();
 
 		foreach($this->vecArgs as $vecArg){
 			$vecArg->pool($vectorPool);

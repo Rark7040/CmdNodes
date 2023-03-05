@@ -9,7 +9,7 @@ use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter as NetworkParameter;
-use rarkhopper\command_nodes\command\handler\ArgumentHoldableTrait;
+use rarkhopper\command_nodes\command\ArgumentHoldableTrait;
 use rarkhopper\command_nodes\command\IExecutable;
 use rarkhopper\command_nodes\command\INetworkParameters;
 use rarkhopper\command_nodes\exception\ArgumentParseFailedException;

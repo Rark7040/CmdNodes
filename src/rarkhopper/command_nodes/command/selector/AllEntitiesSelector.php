@@ -19,6 +19,6 @@ final class AllEntitiesSelector extends SelectorBase{
 		foreach(Server::getInstance()->getWorldManager()->getWorlds() as $world){
 			$entities = array_merge($entities, $world->getEntities());
 		}
-		return $this->filterEntities($entities);
+		return $this->filterEntities($executor, $entities);
 	}
 }

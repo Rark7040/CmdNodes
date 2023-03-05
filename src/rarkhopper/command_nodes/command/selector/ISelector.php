@@ -12,11 +12,9 @@ interface ISelector{
 	/**
 	 * @param array<ISelectorArgument> $args
 	 */
-	public function __construct(Player $executor, array $args);
+	public function __construct(array $args);
 
 	public static function getIdentifier() : string;
-
-	public function getExecutor() : Player;
 
 	/**
 	 * @return ISelectorArgument[]

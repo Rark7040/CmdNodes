@@ -8,6 +8,8 @@ use pocketmine\entity\Entity;
 use pocketmine\math\Vector3;
 
 interface IFilter{
+	public function __construct(string $usedType, string $strOperand);
+
 	/**
 	 * @param array<Entity> $entities
 	 * @return array<Entity>

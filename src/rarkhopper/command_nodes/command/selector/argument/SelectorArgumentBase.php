@@ -7,8 +7,7 @@ namespace rarkhopper\command_nodes\command\selector\argument;
 use pocketmine\entity\Entity;
 use pocketmine\math\Vector3;
 use rarkhopper\command_nodes\exception\InvalidFilterOperandException;
-use function array_multisort;
-use const SORT_DESC;
+use function ksort;
 use const SORT_NUMERIC;
 
 abstract class SelectorArgumentBase implements ISelectorArgument{
@@ -33,9 +32,9 @@ abstract class SelectorArgumentBase implements ISelectorArgument{
 		$orderedEntities = [];
 
 		foreach($entities as $entity){
-			$orderedEntities[$entity->getPosition()->distance($vec3)] = $entity;
+			$orderedEntities[(int) $entity->getPosition()->distance($vec3)] = $entity;
 		}
-		array_multisort($orderedEntities, SORT_NUMERIC, SORT_DESC);
+		ksort($orderedEntities, SORT_NUMERIC);
 		return $orderedEntities;
 	}
 }

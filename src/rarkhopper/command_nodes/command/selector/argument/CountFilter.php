@@ -19,7 +19,7 @@ final class CountFilter extends SelectorArgumentBase implements IFilter{
 	public function __construct(string $usedType, string $strOperand){
 		parent::__construct($usedType, $strOperand);
 
-		if(self::isValidOperand($strOperand)) throw new InvalidFilterOperandException($strOperand);
+		if(!self::isValidOperand($strOperand)) throw new InvalidFilterOperandException($strOperand);
 		$this->maxCnt = (int) $strOperand;
 	}
 
